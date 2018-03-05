@@ -10,8 +10,19 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
+int foo;
+
 void set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool INOUT);
 void toggle_pin(int PORT, int PINNumb);
+
+// SPI
+void start_SPI(int PORTMosi, int PORTMiso, int PORTSckl, _Bool MasterSlave, _Bool MSBLSBFirst, int clk, _Bool clkRisingFalling);
+void sendoverspi(char* data);
+// End SPI
+
+// Timers
+
+// Timers
 
 
 
