@@ -21,36 +21,20 @@
 
 extern int foo;
 
-volatile uint16_t __ms = 0;
-volatile unsigned long __lastTimerSeconds = 0; // Should atleast 136 years
+volatile unsigned long __ms;
 
-ISR(TIMER0_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli seconds
+ISR(TIMER0_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting ms
 {
-    /*if(__ms >= (2^32) - 500) { // Dopo 50 giorni, la variabile potrebbe andare in overflow..
-		__ms = 0 + (__ms - ((2^32) - 500));
-	}*/
-	__ms++;
-	if(__ms > 1000) { // All Functions every seconds
-		__lastTimerSeconds++;
-		__ms -= 1000;
-		updateRTC();
-	}
-	// Tutte le funzioni ogni milli secondo
-}
-
-ISR(SPI_STC_vect) // ISR 
-{
-    
+	// ISR code to execute here
 }
 
 int main(void)
 {
 	// Enable Interrupts and configs
-	(*(volatile uint8_t*) (0x5F)) |= (1 << 7); // Enable interrupts
-	(*(volatile uint8_t*) (0x44)) |= (0b00000010); // Set the CTC mode
-	(*(volatile uint8_t*) (0x45)) |= (0b00000011); // Set prescaler to 64
-	(*(volatile uint8_t*) (0x6E)) |= (0x02); // enable interrupts
-	(*(volatile uint8_t*) (0x47)) |= (0xFA); // Set comparator to 250
+	(*(volatile uint8_t* TCCR0A)) |= (0x00000010); // Set the CTC mode
+	(*(volatile uint8_t* TCCR0B)) |= (0x00000011); // Set prescaler to 64
+	(*(volatile uint8_t* TIMSK0)) |= (1 << 1); // enable interrupts
+	(*(volatile uint8_t* OCR0B)) |= (0xFA); // Set comparator to 250
 	// Enable Interrupts and configs
 	set_pin(ButtonUP, 5, INPUT, 0);
 	set_pin(ButtonDOWN, 6, INPUT, 0);

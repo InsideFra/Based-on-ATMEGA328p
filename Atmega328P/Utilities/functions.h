@@ -12,6 +12,8 @@
 
 int foo;
 
+// RTC
+
 void set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool INOUT);
 void toggle_pin(int PORT, int PINNumb);
 
@@ -21,7 +23,7 @@ void sendoverspi(char* data);
 // End SPI
 
 // Timers
-
+void updateRTC();
 // Timers
 
 

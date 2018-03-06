@@ -3,31 +3,31 @@ Atmega328P.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  000001be  2**0
+  0 .data         00000000  00800100  00800100  00000284  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000014a  00000000  00000000  00000074  2**1
+  1 .text         00000210  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000006  00800100  00800100  000001be  2**0
+  2 .bss          00000008  00800100  00800100  00000284  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000001be  2**0
+  3 .comment      00000030  00000000  00000000  00000284  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000001f0  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000002b4  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000058  00000000  00000000  00000230  2**0
+  5 .debug_aranges 00000068  00000000  00000000  000002f4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000009c0  00000000  00000000  00000288  2**0
+  6 .debug_info   00000a33  00000000  00000000  0000035c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 0000075e  00000000  00000000  00000c48  2**0
+  7 .debug_abbrev 000007a6  00000000  00000000  00000d8f  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000002ef  00000000  00000000  000013a6  2**0
+  8 .debug_line   000003b3  00000000  00000000  00001535  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000000a4  00000000  00000000  00001698  2**2
+  9 .debug_frame  0000010c  00000000  00000000  000018e8  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000003f4  00000000  00000000  0000173c  2**0
+ 10 .debug_str    00000426  00000000  00000000  000019f4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000243  00000000  00000000  00001b30  2**0
+ 11 .debug_loc    0000030e  00000000  00000000  00001e1a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000038  00000000  00000000  00001d73  2**0
+ 12 .debug_ranges 00000048  00000000  00000000  00002128  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -50,7 +50,7 @@ Disassembly of section .text:
   38:	0c 94 48 00 	jmp	0x90	; 0x90 <__vector_14>
   3c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   40:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
-  44:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  44:	0c 94 99 00 	jmp	0x132	; 0x132 <__vector_17>
   48:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   4c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   50:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
@@ -78,142 +78,238 @@ Disassembly of section .text:
   7c:	1d 92       	st	X+, r1
 
 0000007e <.do_clear_bss_start>:
-  7e:	a6 30       	cpi	r26, 0x06	; 6
+  7e:	a8 30       	cpi	r26, 0x08	; 8
   80:	b2 07       	cpc	r27, r18
   82:	e1 f7       	brne	.-8      	; 0x7c <.do_clear_bss_loop>
-  84:	0e 94 52 00 	call	0xa4	; 0xa4 <main>
-  88:	0c 94 a3 00 	jmp	0x146	; 0x146 <_exit>
+  84:	0e 94 a3 00 	call	0x146	; 0x146 <main>
+  88:	0c 94 06 01 	jmp	0x20c	; 0x20c <_exit>
 
 0000008c <__bad_interrupt>:
   8c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 00000090 <__vector_14>:
-extern int foo;
 
-volatile unsigned long __ms;
+volatile uint16_t __ms = 0;
+volatile unsigned long __lastTimerSeconds = 0; // Should atleast 136 years
 
-ISR(TIMER0_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting ms
+ISR(TIMER0_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli seconds
 {
   90:	1f 92       	push	r1
   92:	0f 92       	push	r0
   94:	0f b6       	in	r0, 0x3f	; 63
   96:	0f 92       	push	r0
   98:	11 24       	eor	r1, r1
-	// ISR code to execute here
+  9a:	2f 93       	push	r18
+  9c:	3f 93       	push	r19
+  9e:	4f 93       	push	r20
+  a0:	5f 93       	push	r21
+  a2:	6f 93       	push	r22
+  a4:	7f 93       	push	r23
+  a6:	8f 93       	push	r24
+  a8:	9f 93       	push	r25
+  aa:	af 93       	push	r26
+  ac:	bf 93       	push	r27
+  ae:	ef 93       	push	r30
+  b0:	ff 93       	push	r31
+    /*if(__ms >= (2^32) - 500) { // Dopo 50 giorni, la variabile potrebbe andare in overflow..
+		__ms = 0 + (__ms - ((2^32) - 500));
+	}*/
+	__ms++;
+  b2:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <__ms>
+  b6:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <__ms+0x1>
+  ba:	01 96       	adiw	r24, 0x01	; 1
+  bc:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <__ms+0x1>
+  c0:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <__ms>
+	if(__ms > 1000) { // All Functions every seconds
+  c4:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <__ms>
+  c8:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <__ms+0x1>
+  cc:	89 3e       	cpi	r24, 0xE9	; 233
+  ce:	93 40       	sbci	r25, 0x03	; 3
+  d0:	f8 f0       	brcs	.+62     	; 0x110 <__vector_14+0x80>
+		__lastTimerSeconds++;
+  d2:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <_edata>
+  d6:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <_edata+0x1>
+  da:	a0 91 02 01 	lds	r26, 0x0102	; 0x800102 <_edata+0x2>
+  de:	b0 91 03 01 	lds	r27, 0x0103	; 0x800103 <_edata+0x3>
+  e2:	01 96       	adiw	r24, 0x01	; 1
+  e4:	a1 1d       	adc	r26, r1
+  e6:	b1 1d       	adc	r27, r1
+  e8:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <_edata>
+  ec:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <_edata+0x1>
+  f0:	a0 93 02 01 	sts	0x0102, r26	; 0x800102 <_edata+0x2>
+  f4:	b0 93 03 01 	sts	0x0103, r27	; 0x800103 <_edata+0x3>
+		__ms -= 1000;
+  f8:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <__ms>
+  fc:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <__ms+0x1>
+ 100:	88 5e       	subi	r24, 0xE8	; 232
+ 102:	93 40       	sbci	r25, 0x03	; 3
+ 104:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <__ms+0x1>
+ 108:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <__ms>
+		updateRTC();
+ 10c:	0e 94 05 01 	call	0x20a	; 0x20a <updateRTC>
+	}
+	// Tutte le funzioni ogni milli secondo
 }
-  9a:	0f 90       	pop	r0
-  9c:	0f be       	out	0x3f, r0	; 63
-  9e:	0f 90       	pop	r0
-  a0:	1f 90       	pop	r1
-  a2:	18 95       	reti
+ 110:	ff 91       	pop	r31
+ 112:	ef 91       	pop	r30
+ 114:	bf 91       	pop	r27
+ 116:	af 91       	pop	r26
+ 118:	9f 91       	pop	r25
+ 11a:	8f 91       	pop	r24
+ 11c:	7f 91       	pop	r23
+ 11e:	6f 91       	pop	r22
+ 120:	5f 91       	pop	r21
+ 122:	4f 91       	pop	r20
+ 124:	3f 91       	pop	r19
+ 126:	2f 91       	pop	r18
+ 128:	0f 90       	pop	r0
+ 12a:	0f be       	out	0x3f, r0	; 63
+ 12c:	0f 90       	pop	r0
+ 12e:	1f 90       	pop	r1
+ 130:	18 95       	reti
 
-000000a4 <main>:
+00000132 <__vector_17>:
+
+ISR(SPI_STC_vect) // ISR 
+{
+ 132:	1f 92       	push	r1
+ 134:	0f 92       	push	r0
+ 136:	0f b6       	in	r0, 0x3f	; 63
+ 138:	0f 92       	push	r0
+ 13a:	11 24       	eor	r1, r1
+    
+}
+ 13c:	0f 90       	pop	r0
+ 13e:	0f be       	out	0x3f, r0	; 63
+ 140:	0f 90       	pop	r0
+ 142:	1f 90       	pop	r1
+ 144:	18 95       	reti
+
+00000146 <main>:
+
 int main(void)
 {
 	// Enable Interrupts and configs
-	
+	(*(volatile uint8_t*) (0x5F)) |= (1 << 7); // Enable interrupts
+ 146:	8f b7       	in	r24, 0x3f	; 63
+ 148:	80 68       	ori	r24, 0x80	; 128
+ 14a:	8f bf       	out	0x3f, r24	; 63
+	(*(volatile uint8_t*) (0x44)) |= (0b00000010); // Set the CTC mode
+ 14c:	84 b5       	in	r24, 0x24	; 36
+ 14e:	82 60       	ori	r24, 0x02	; 2
+ 150:	84 bd       	out	0x24, r24	; 36
+	(*(volatile uint8_t*) (0x45)) |= (0b00000011); // Set prescaler to 64
+ 152:	85 b5       	in	r24, 0x25	; 37
+ 154:	83 60       	ori	r24, 0x03	; 3
+ 156:	85 bd       	out	0x25, r24	; 37
+	(*(volatile uint8_t*) (0x6E)) |= (0x02); // enable interrupts
+ 158:	ee e6       	ldi	r30, 0x6E	; 110
+ 15a:	f0 e0       	ldi	r31, 0x00	; 0
+ 15c:	80 81       	ld	r24, Z
+ 15e:	82 60       	ori	r24, 0x02	; 2
+ 160:	80 83       	st	Z, r24
+	(*(volatile uint8_t*) (0x47)) |= (0xFA); // Set comparator to 250
+ 162:	87 b5       	in	r24, 0x27	; 39
+ 164:	8a 6f       	ori	r24, 0xFA	; 250
+ 166:	87 bd       	out	0x27, r24	; 39
 	// Enable Interrupts and configs
 	set_pin(ButtonUP, 5, INPUT, 0);
-  a4:	20 e0       	ldi	r18, 0x00	; 0
-  a6:	40 e0       	ldi	r20, 0x00	; 0
-  a8:	65 e0       	ldi	r22, 0x05	; 5
-  aa:	70 e0       	ldi	r23, 0x00	; 0
-  ac:	8b e2       	ldi	r24, 0x2B	; 43
-  ae:	90 e0       	ldi	r25, 0x00	; 0
-  b0:	0e 94 71 00 	call	0xe2	; 0xe2 <set_pin>
+ 168:	20 e0       	ldi	r18, 0x00	; 0
+ 16a:	40 e0       	ldi	r20, 0x00	; 0
+ 16c:	65 e0       	ldi	r22, 0x05	; 5
+ 16e:	70 e0       	ldi	r23, 0x00	; 0
+ 170:	8b e2       	ldi	r24, 0x2B	; 43
+ 172:	90 e0       	ldi	r25, 0x00	; 0
+ 174:	0e 94 d3 00 	call	0x1a6	; 0x1a6 <set_pin>
 	set_pin(ButtonDOWN, 6, INPUT, 0);
-  b4:	20 e0       	ldi	r18, 0x00	; 0
-  b6:	40 e0       	ldi	r20, 0x00	; 0
-  b8:	66 e0       	ldi	r22, 0x06	; 6
-  ba:	70 e0       	ldi	r23, 0x00	; 0
-  bc:	8b e2       	ldi	r24, 0x2B	; 43
-  be:	90 e0       	ldi	r25, 0x00	; 0
-  c0:	0e 94 71 00 	call	0xe2	; 0xe2 <set_pin>
+ 178:	20 e0       	ldi	r18, 0x00	; 0
+ 17a:	40 e0       	ldi	r20, 0x00	; 0
+ 17c:	66 e0       	ldi	r22, 0x06	; 6
+ 17e:	70 e0       	ldi	r23, 0x00	; 0
+ 180:	8b e2       	ldi	r24, 0x2B	; 43
+ 182:	90 e0       	ldi	r25, 0x00	; 0
+ 184:	0e 94 d3 00 	call	0x1a6	; 0x1a6 <set_pin>
 	set_pin(Speacker, 7, OUTPUT, 0);
-  c4:	20 e0       	ldi	r18, 0x00	; 0
-  c6:	41 e0       	ldi	r20, 0x01	; 1
-  c8:	67 e0       	ldi	r22, 0x07	; 7
-  ca:	70 e0       	ldi	r23, 0x00	; 0
-  cc:	8b e2       	ldi	r24, 0x2B	; 43
-  ce:	90 e0       	ldi	r25, 0x00	; 0
-  d0:	0e 94 71 00 	call	0xe2	; 0xe2 <set_pin>
+ 188:	20 e0       	ldi	r18, 0x00	; 0
+ 18a:	41 e0       	ldi	r20, 0x01	; 1
+ 18c:	67 e0       	ldi	r22, 0x07	; 7
+ 18e:	70 e0       	ldi	r23, 0x00	; 0
+ 190:	8b e2       	ldi	r24, 0x2B	; 43
+ 192:	90 e0       	ldi	r25, 0x00	; 0
+ 194:	0e 94 d3 00 	call	0x1a6	; 0x1a6 <set_pin>
 	foo = 1;
-  d4:	81 e0       	ldi	r24, 0x01	; 1
-  d6:	90 e0       	ldi	r25, 0x00	; 0
-  d8:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <foo+0x1>
-  dc:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <foo>
-  e0:	ff cf       	rjmp	.-2      	; 0xe0 <main+0x3c>
+ 198:	81 e0       	ldi	r24, 0x01	; 1
+ 19a:	90 e0       	ldi	r25, 0x00	; 0
+ 19c:	90 93 07 01 	sts	0x0107, r25	; 0x800107 <foo+0x1>
+ 1a0:	80 93 06 01 	sts	0x0106, r24	; 0x800106 <foo>
+ 1a4:	ff cf       	rjmp	.-2      	; 0x1a4 <main+0x5e>
 
-000000e2 <set_pin>:
-#include "functions.h"
-#include "../define.h"
-#include <avr/io.h>
+000001a6 <set_pin>:
+	// Setup as : Interrupt disabled (SPIE0 bit 7 set 0), Spi Enabled (SPE0 bit 6 set 1), MSB First (DORD bit 5 set 0),  Master Enabled (MSTR bit 4 set 1),
+	// clk Rising ( CPOL bit 3 set 0), bit 2 not use, SPI Clock Rate set as fosc/4 ( SPR [0, 1])
+	if(!MasterSlave) fool ^= (1 << MSTR);     // Setup as Slave , MSTR must be 0
+	if(!MSBLSBFirst) fool ^= (1 << DORD);     // Setup as LSB First, DRDB must be 1
+	if(clkRisingFalling) fool ^= (1 << CPOL); // Setup as Falling Edge, CPOL must be 1
+}
+ 1a6:	fc 01       	movw	r30, r24
+ 1a8:	dc 01       	movw	r26, r24
+ 1aa:	11 97       	sbiw	r26, 0x01	; 1
+ 1ac:	44 23       	and	r20, r20
+ 1ae:	89 f0       	breq	.+34     	; 0x1d2 <set_pin+0x2c>
+ 1b0:	3c 91       	ld	r19, X
+ 1b2:	81 e0       	ldi	r24, 0x01	; 1
+ 1b4:	90 e0       	ldi	r25, 0x00	; 0
+ 1b6:	06 2e       	mov	r0, r22
+ 1b8:	02 c0       	rjmp	.+4      	; 0x1be <set_pin+0x18>
+ 1ba:	88 0f       	add	r24, r24
+ 1bc:	99 1f       	adc	r25, r25
+ 1be:	0a 94       	dec	r0
+ 1c0:	e2 f7       	brpl	.-8      	; 0x1ba <set_pin+0x14>
+ 1c2:	93 2f       	mov	r25, r19
+ 1c4:	98 2b       	or	r25, r24
+ 1c6:	9c 93       	st	X, r25
+ 1c8:	90 81       	ld	r25, Z
+ 1ca:	80 95       	com	r24
+ 1cc:	89 23       	and	r24, r25
+ 1ce:	80 83       	st	Z, r24
+ 1d0:	0c c0       	rjmp	.+24     	; 0x1ea <set_pin+0x44>
+ 1d2:	3c 91       	ld	r19, X
+ 1d4:	81 e0       	ldi	r24, 0x01	; 1
+ 1d6:	90 e0       	ldi	r25, 0x00	; 0
+ 1d8:	06 2e       	mov	r0, r22
+ 1da:	02 c0       	rjmp	.+4      	; 0x1e0 <set_pin+0x3a>
+ 1dc:	88 0f       	add	r24, r24
+ 1de:	99 1f       	adc	r25, r25
+ 1e0:	0a 94       	dec	r0
+ 1e2:	e2 f7       	brpl	.-8      	; 0x1dc <set_pin+0x36>
+ 1e4:	80 95       	com	r24
+ 1e6:	83 23       	and	r24, r19
+ 1e8:	8c 93       	st	X, r24
+ 1ea:	22 23       	and	r18, r18
+ 1ec:	69 f0       	breq	.+26     	; 0x208 <set_pin+0x62>
+ 1ee:	8c 91       	ld	r24, X
+ 1f0:	21 e0       	ldi	r18, 0x01	; 1
+ 1f2:	30 e0       	ldi	r19, 0x00	; 0
+ 1f4:	02 c0       	rjmp	.+4      	; 0x1fa <set_pin+0x54>
+ 1f6:	22 0f       	add	r18, r18
+ 1f8:	33 1f       	adc	r19, r19
+ 1fa:	6a 95       	dec	r22
+ 1fc:	e2 f7       	brpl	.-8      	; 0x1f6 <set_pin+0x50>
+ 1fe:	82 2b       	or	r24, r18
+ 200:	8c 93       	st	X, r24
+ 202:	80 81       	ld	r24, Z
+ 204:	28 2b       	or	r18, r24
+ 206:	20 83       	st	Z, r18
+ 208:	08 95       	ret
 
+0000020a <updateRTC>:
 
-void set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool INOUT) {
-  e2:	fc 01       	movw	r30, r24
-	int DDR = (PORT) - 0x01;
-  e4:	dc 01       	movw	r26, r24
-  e6:	11 97       	sbiw	r26, 0x01	; 1
-	if (INPOUT)  {
-  e8:	44 23       	and	r20, r20
-  ea:	89 f0       	breq	.+34     	; 0x10e <set_pin+0x2c>
-		// Pin output, default low
-		(*(volatile uint8_t *)(DDR)) |= (1 << PINNumb); // Pin output
-  ec:	3c 91       	ld	r19, X
-  ee:	81 e0       	ldi	r24, 0x01	; 1
-  f0:	90 e0       	ldi	r25, 0x00	; 0
-  f2:	06 2e       	mov	r0, r22
-  f4:	02 c0       	rjmp	.+4      	; 0xfa <set_pin+0x18>
-  f6:	88 0f       	add	r24, r24
-  f8:	99 1f       	adc	r25, r25
-  fa:	0a 94       	dec	r0
-  fc:	e2 f7       	brpl	.-8      	; 0xf6 <set_pin+0x14>
-  fe:	93 2f       	mov	r25, r19
- 100:	98 2b       	or	r25, r24
- 102:	9c 93       	st	X, r25
-		(*(volatile uint8_t *)(PORT)) &= (255^(1 << PINNumb) ); // Pin Low
- 104:	90 81       	ld	r25, Z
- 106:	80 95       	com	r24
- 108:	89 23       	and	r24, r25
- 10a:	80 83       	st	Z, r24
- 10c:	0c c0       	rjmp	.+24     	; 0x126 <set_pin+0x44>
-	} else (*(volatile uint8_t *)(DDR)) &= (0xFF^(1 << PINNumb)); // Pin input
- 10e:	3c 91       	ld	r19, X
- 110:	81 e0       	ldi	r24, 0x01	; 1
- 112:	90 e0       	ldi	r25, 0x00	; 0
- 114:	06 2e       	mov	r0, r22
- 116:	02 c0       	rjmp	.+4      	; 0x11c <set_pin+0x3a>
- 118:	88 0f       	add	r24, r24
- 11a:	99 1f       	adc	r25, r25
- 11c:	0a 94       	dec	r0
- 11e:	e2 f7       	brpl	.-8      	; 0x118 <set_pin+0x36>
- 120:	80 95       	com	r24
- 122:	83 23       	and	r24, r19
- 124:	8c 93       	st	X, r24
-	if(INOUT) {
- 126:	22 23       	and	r18, r18
- 128:	69 f0       	breq	.+26     	; 0x144 <set_pin+0x62>
-		// Set Pin High, --> set pin output
-		(*(volatile uint8_t *)(DDR)) |= (1 << PINNumb); // Pin Output
- 12a:	8c 91       	ld	r24, X
- 12c:	21 e0       	ldi	r18, 0x01	; 1
- 12e:	30 e0       	ldi	r19, 0x00	; 0
- 130:	02 c0       	rjmp	.+4      	; 0x136 <set_pin+0x54>
- 132:	22 0f       	add	r18, r18
- 134:	33 1f       	adc	r19, r19
- 136:	6a 95       	dec	r22
- 138:	e2 f7       	brpl	.-8      	; 0x132 <set_pin+0x50>
- 13a:	82 2b       	or	r24, r18
- 13c:	8c 93       	st	X, r24
-		(*(volatile uint8_t *)(PORT)) |= (1 << PINNumb); } // Pin High
- 13e:	80 81       	ld	r24, Z
- 140:	28 2b       	or	r18, r24
- 142:	20 83       	st	Z, r18
- 144:	08 95       	ret
+// Timers
+void updateRTC() {
+ 20a:	08 95       	ret
 
-00000146 <_exit>:
- 146:	f8 94       	cli
+0000020c <_exit>:
+ 20c:	f8 94       	cli
 
-00000148 <__stop_program>:
- 148:	ff cf       	rjmp	.-2      	; 0x148 <__stop_program>
+0000020e <__stop_program>:
+ 20e:	ff cf       	rjmp	.-2      	; 0x20e <__stop_program>

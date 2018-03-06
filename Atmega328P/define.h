@@ -19,6 +19,12 @@
 #define ButtonDOWN 0x2B // pin 6
 #define Speacker 0x2B // pin 7
 
+// Wireless 
+#define WCSN 0x25 // pin 0
+#define WIRQ 0x25 // pin 1
+#define WCE  0x25 // pin 2
+// Wireless
+
 #define INPUT 0
 #define OUTPUT 1
 

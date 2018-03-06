@@ -44,3 +44,8 @@ void start_SPI(int PORTMosi, int PORTMiso, int PORTSckl, _Bool MasterSlave, _Boo
 	if(!MSBLSBFirst) fool ^= (1 << DORD);     // Setup as LSB First, DRDB must be 1
 	if(clkRisingFalling) fool ^= (1 << CPOL); // Setup as Falling Edge, CPOL must be 1
 }
+
+// Timers
+void updateRTC() {
+	
+}
