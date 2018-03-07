@@ -26,9 +26,6 @@ volatile unsigned long __lastTimerSeconds = 0; // Should atleast 136 years
 
 ISR(TIMER0_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli seconds
 {
-    /*if(__ms >= (2^32) - 500) { // Dopo 50 giorni, la variabile potrebbe andare in overflow..
-		__ms = 0 + (__ms - ((2^32) - 500));
-	}*/
 	__ms++;
 	if(__ms > 1000) { // All Functions every seconds
 		__lastTimerSeconds++;
@@ -38,7 +35,7 @@ ISR(TIMER0_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli
 	// Tutte le funzioni ogni milli secondo
 }
 
-ISR(SPI_STC_vect) // ISR 
+ISR(SPI_STC_vect) // ISR SPI finito
 {
     
 }

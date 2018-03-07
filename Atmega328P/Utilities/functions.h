@@ -26,6 +26,8 @@ void sendoverspi(char* data);
 void updateRTC();
 // Timers
 
+struct time functTime();
+
 
 
 #endif /* FUNCTIONS_H_ */

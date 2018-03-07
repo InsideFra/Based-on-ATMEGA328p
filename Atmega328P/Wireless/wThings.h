@@ -9,7 +9,9 @@
 #ifndef WTHINGS_H_
 #define WTHINGS_H_
 
-
+#include <../Utilities/functions.h>
+#include <avr/io.h>
+#include <define.h>
 
 
 

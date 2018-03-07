@@ -28,4 +28,13 @@
 #define INPUT 0
 #define OUTPUT 1
 
+struct time {
+	uint8_t Secondi;
+	uint8_t Minuti;
+	uint8_t Ore;
+	uint8_t Giorno;
+	uint8_t Mesi;
+	uint8_t Anno; // Since 1999 to 2135
+};
+
 #endif /* DEFINE_H_ */

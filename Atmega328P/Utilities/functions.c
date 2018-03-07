@@ -9,6 +9,9 @@
 #include "../define.h"
 #include <avr/io.h>
 
+extern volatile uint16_t __ms;
+extern volatile unsigned long __lastTimerSeconds; // Should atleast 136 years
+
 
 void set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool INOUT) {
 	int DDR = (PORT) - 0x01;
@@ -45,7 +48,16 @@ void start_SPI(int PORTMosi, int PORTMiso, int PORTSckl, _Bool MasterSlave, _Boo
 	if(clkRisingFalling) fool ^= (1 << CPOL); // Setup as Falling Edge, CPOL must be 1
 }
 
+void sendoverspi(char* data) {
+	
+}
+
 // Timers
 void updateRTC() {
 	
+}
+// Timers
+
+struct time functTime() {
+	uint32_t allms =  __lastTimerSeconds;
 }
