@@ -17,9 +17,11 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "Utilities/functions.h"
+#include "Wireless/wThings.h"
 #include "define.h"
 
-extern int foo;
+extern int     foo;
+extern uint8_t Sending;
 
 volatile uint16_t __ms = 0;
 volatile unsigned long __lastTimerSeconds = 0; // Should atleast 136 years
@@ -37,7 +39,11 @@ ISR(TIMER0_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli
 
 ISR(SPI_STC_vect) // ISR SPI finito
 {
-    
+	switch(Sending) {
+		case 0:
+		case 1:
+		;
+	}
 }
 
 int main(void)
@@ -52,6 +58,9 @@ int main(void)
 	set_pin(ButtonUP, 5, INPUT, 0);
 	set_pin(ButtonDOWN, 6, INPUT, 0);
 	set_pin(Speacker, 7, OUTPUT, 0);
+	// enable Wireless
+	
+	// enable Wireless
 	foo = 1;
     while (1) 
     {

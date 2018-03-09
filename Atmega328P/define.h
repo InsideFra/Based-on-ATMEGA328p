@@ -28,6 +28,8 @@
 #define INPUT 0
 #define OUTPUT 1
 
+#define wRegister 0b11010010
+
 struct time {
 	uint8_t Secondi;
 	uint8_t Minuti;
