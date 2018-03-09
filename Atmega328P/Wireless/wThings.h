@@ -9,13 +9,12 @@
 #ifndef WTHINGS_H_
 #define WTHINGS_H_
 
-#include "../Utilities/functions.h"
 #include <avr/io.h>
-#include "../define.h"
 
-void startWireless();
-uint32_t* wRead_Register (uint8_t hexadress);
-void      wWrite_Register(uint8_t hexadress, uint32_t *datatowrite);
+void      startWireless();
+uint32_t  wRead_Register (uint8_t hexadress);
+void      wWrite_Register8(uint8_t hexadress, uint8_t datatowrite);
+void      wWrite_Register32(uint8_t hexadress, uint32_t datatowrite, uint8_t buflengh);
 void      wNOP();
 
 

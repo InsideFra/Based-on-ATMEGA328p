@@ -19,7 +19,7 @@ void toggle_pin(int PORT, int PINNumb);
 
 // SPI
 void start_SPI(int PORTMosi, int PORTMiso, int PORTSckl, _Bool MasterSlave, _Bool MSBLSBFirst, int clk, _Bool clkRisingFalling);
-void sendoverspi(uint32_t* data, uint8_t size);
+_Bool sendoverspi(uint32_t* data, uint8_t size);
 // End SPI
 
 // Timers
