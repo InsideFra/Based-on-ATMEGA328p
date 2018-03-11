@@ -49,13 +49,14 @@ ISR(SPI_STC_vect) // ISR SPI finito
 			bufferDataToWrite_size -= 8;
 			uint8_t splicing[4];
 			*(uint32_t *)&splicing = bufferDataToWrite;
+			(bufferDataToWrite >>= 8);
 			sendoverspi(splicing[3], 2);	
 		} else {
 			uint8_t splicing[4];
 			*(uint32_t *)&splicing = bufferDataToWrite;
 			sendoverspi(splicing[3], 3);
 		}
-		case 3: bufferDataToWrite = 0; Sending = 0; // work in progress
+		case 3: bufferDataToWrite = 0; Sending = 0; toggle_pin(WCSN, 0); // Necessario per interrompere una trasmissione nel chip. // work in progress
 		;
 	} 
 	Sending = 0;
