@@ -14,6 +14,7 @@
 extern uint8_t Sending;
 
 uint32_t bufferDataToWrite = 0;
+uint8_t  bufferDataToWrite_size = 0;
 
 uint32_t wRead_Register(uint8_t hexadress) {
 	return 0;
@@ -32,14 +33,9 @@ uint32_t wRead_Register(uint8_t hexadress) {
 */
 
 void wWrite_Register8(uint8_t hexadress, uint8_t datatowrite) {
-	uint32_t bufferToSend = 0;
-	bufferToSend = (uint32_t)(hexadress);  // Si "trasforma" la variabile hexadress da 8bit in 32bit
     bufferDataToWrite = (uint32_t)(datatowrite); // Si "trasforma" la variabile datatowrite da 8bit in 32bit
-	bufferDataToWrite << 24; bufferToSend << 24;
-	if(!Sending) {
-		Sending = 2; 
-        sendoverspi(&bufferToSend, 8);
-	} 
+	bufferDataToWrite_size = 8;
+    sendoverspi(hexadress, 2);
 }
 
 void wWrite_Register32(uint8_t hexadress, uint32_t datatowrite, uint8_t buflengh) {

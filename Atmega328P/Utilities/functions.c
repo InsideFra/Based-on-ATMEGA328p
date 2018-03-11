@@ -51,13 +51,12 @@ void start_SPI(int PORTMosi, int PORTMiso, int PORTSckl, _Bool MasterSlave, _Boo
 	if(clkRisingFalling) SPCR ^= (1 << CPOL); // Setup as Falling Edge, CPOL must be 1
 }
 
-_Bool sendoverspi(uint32_t* data, uint8_t size) {
-	if(size <= 8) {
-		char _cData = 0;
-		memcpy(&_cData, data, 8);
-		SPDR = _cData;
+_Bool sendoverspi(uint8_t _data, uint8_t action) {
+	if(Sending == 0) {
+		Sending = action;
+		SPDR = _data;
 		return 1;
-	} else { return 0;}
+	}
 	return 0;
 }
 
@@ -69,4 +68,4 @@ void updateRTC() {
 
 struct time functTime() {
 	uint32_t allms =  __lastTimerSeconds;
-}
+};

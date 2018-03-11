@@ -38,17 +38,23 @@ ISR(TIMER0_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli
 }
 
 extern uint32_t bufferDataToWrite;
+extern uint8_t  bufferDataToWrite_size;
 
 ISR(SPI_STC_vect) // ISR SPI finito
 {
 	switch(Sending) {
 		case 0:
 		case 1:
-		case 2: Sending = 0;
-		if(!Sending) {
-			Sending = 3; 
-			sendoverspi(&bufferDataToWrite, 8);
-		} 
+		case 2: if(bufferDataToWrite_size > 8) {
+			bufferDataToWrite_size -= 8;
+			uint8_t splicing[4];
+			*(uint32_t *)&splicing = bufferDataToWrite;
+			sendoverspi(splicing[3], 2);	
+		} else {
+			uint8_t splicing[4];
+			*(uint32_t *)&splicing = bufferDataToWrite;
+			sendoverspi(splicing[3], 3);
+		}
 		case 3: bufferDataToWrite = 0; Sending = 0; // work in progress
 		;
 	} 
