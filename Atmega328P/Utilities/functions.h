@@ -14,8 +14,9 @@ int foo;
 
 // RTC
 
-void set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool INOUT);
+void set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool LowHIGH);
 void toggle_pin(int PORT, int PINNumb);
+_Bool getstatus_pin(int PORT, int PINNUmb);
 
 // SPI
 void start_SPI(int PORTMosi, int PORTMiso, int PORTSckl, _Bool MasterSlave, _Bool MSBLSBFirst, int clk, _Bool clkRisingFalling);

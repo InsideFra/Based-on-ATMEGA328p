@@ -16,14 +16,14 @@ extern volatile unsigned long __lastTimerSeconds; // Should atleast 136 years
 volatile uint8_t Sending = 0;
 
 
-void set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool INOUT) {
+void set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool LowHIGH) {
 	int DDR = (PORT) - 0x01;
 	if (INPOUT)  {
 		// Pin output, default low
 		(*(volatile uint8_t *)(DDR)) |= (1 << PINNumb); // Pin output
 		(*(volatile uint8_t *)(PORT)) &= (255^(1 << PINNumb) ); // Pin Low
 	} else (*(volatile uint8_t *)(DDR)) &= (0xFF^(1 << PINNumb)); // Pin input
-	if(INOUT) {
+	if(LowHIGH) {
 		// Set Pin High, --> set pin output
 		(*(volatile uint8_t *)(DDR)) |= (1 << PINNumb); // Pin Output
 		(*(volatile uint8_t *)(PORT)) |= (1 << PINNumb); } // Pin High
@@ -35,6 +35,11 @@ void toggle_pin(int PORT, int PINNumb) {
 	if( ((*(volatile uint8_t*)(DDR)) & (1 << PINNumb)) == (1 << PINNumb) ) { // Pin output
 		(*(volatile uint8_t*)(PORT)) ^= (1 << PINNumb); // Pin Toggled 
 	}
+}
+
+_Bool getstatus_pin(int PORT, int PINNUmb) {
+	// work in progress
+	return 0;
 }
 
 void start_SPI(int PORTMosi, int PORTMiso, int PORTSckl, _Bool MasterSlave, _Bool MSBLSBFirst, int clk, _Bool clkRisingFalling) {
