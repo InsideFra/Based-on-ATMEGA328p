@@ -12,9 +12,10 @@
 #include <avr/io.h>
 
 void      startWireless();
-uint32_t  wRead_Register (uint8_t hexadress);
-void      wWrite_Register8(uint8_t hexadress, uint8_t datatowrite);
-void      wWrite_Register32(uint8_t hexadress, uint32_t datatowrite, uint8_t buflengh);
+uint8_t   wRead_Register8   (uint8_t hexadress);
+uint32_t  wRead_Register32  (uint8_t hexadress);
+void      wWrite_Register8  (uint8_t hexadress, uint8_t datatowrite);
+void      wWrite_Register32 (uint8_t hexadress, uint32_t datatowrite, uint8_t buflengh);
 void      wNOP();
 
 

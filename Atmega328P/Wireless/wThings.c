@@ -59,3 +59,11 @@ void startWireless() {
 		}
 	} else start_SPI(PMosi, PMiso, PSckl, 0, 0, 0, 0); startWireless();
 }
+
+uint8_t wRead_Register8(uint8_t hexadress) {
+	
+}
+
+uint32_t wRead_Register32(uint8_t hexadress) {
+	
+}
