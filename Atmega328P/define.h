@@ -9,6 +9,8 @@
 #ifndef DEFINE_H_
 #define DEFINE_H_
 
+#define F_CPU 
+
 #define PMiso 0x25 // pin 4
 #define PMosi 0x25 // pin 3
 #define PSckl 0x25 // pin 5

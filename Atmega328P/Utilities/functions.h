@@ -23,11 +23,18 @@ void start_SPI(int PORTMosi, int PORTMiso, int PORTSckl, _Bool MasterSlave, _Boo
 _Bool sendoverspi(uint8_t _data, uint8_t action);
 // End SPI
 
+// i2c
+
+// End i2c
+
 // Timers
 void updateRTC();
-// Timers
+//  End Timers
 
 struct time functTime();
+
+void write_Register8(uint8_t Register, char Value);
+uint8_t read_Register8();
 
 
 

@@ -21,7 +21,7 @@ void set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool LowHIGH) {
 	if (INPOUT)  {
 		// Pin output, default low
 		(*(volatile uint8_t *)(DDR)) |= (1 << PINNumb); // Pin output
-		(*(volatile uint8_t *)(PORT)) &= (255^(1 << PINNumb) ); // Pin Low
+		(*(volatile uint8_t *)(PORT)) &= !(1 << PINNumb); // Pin Low
 	} else (*(volatile uint8_t *)(DDR)) &= (0xFF^(1 << PINNumb)); // Pin input
 	if(LowHIGH) {
 		// Set Pin High, --> set pin output

@@ -3,31 +3,33 @@ Atmega328P.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  0000048c  2**0
+  0 .data         00000000  00800100  00800100  000003af  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000418  00000000  00000000  00000074  2**1
+  1 .text         00000318  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          0000000e  00800100  00800100  0000048c  2**0
+  2 .bss          0000000e  00800100  00800100  000003ac  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  0000048c  2**0
+  3 .fuse         00000003  00820000  00820000  000003ac  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  4 .comment      00000030  00000000  00000000  000003af  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000004bc  2**2
+  5 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000003e0  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000000c8  00000000  00000000  000004fc  2**0
+  6 .debug_aranges 000000c8  00000000  00000000  00000420  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000fb9  00000000  00000000  000005c4  2**0
+  7 .debug_info   00001042  00000000  00000000  000004e8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000977  00000000  00000000  0000157d  2**0
+  8 .debug_abbrev 0000097f  00000000  00000000  0000152a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000679  00000000  00000000  00001ef4  2**0
+  9 .debug_line   000006c8  00000000  00000000  00001ea9  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000210  00000000  00000000  00002570  2**2
+ 10 .debug_frame  00000234  00000000  00000000  00002574  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000569  00000000  00000000  00002780  2**0
+ 11 .debug_str    00000587  00000000  00000000  000027a8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000603  00000000  00000000  00002ce9  2**0
+ 12 .debug_loc    00000698  00000000  00000000  00002d2f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000098  00000000  00000000  000032ec  2**0
+ 13 .debug_ranges 00000098  00000000  00000000  000033c7  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -50,7 +52,7 @@ Disassembly of section .text:
   38:	0c 94 48 00 	jmp	0x90	; 0x90 <__vector_14>
   3c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   40:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
-  44:	0c 94 89 00 	jmp	0x112	; 0x112 <__vector_17>
+  44:	0c 94 9d 00 	jmp	0x13a	; 0x13a <__vector_17>
   48:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   4c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   50:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
@@ -81,16 +83,16 @@ Disassembly of section .text:
   7e:	ae 30       	cpi	r26, 0x0E	; 14
   80:	b2 07       	cpc	r27, r18
   82:	e1 f7       	brne	.-8      	; 0x7c <.do_clear_bss_loop>
-  84:	0e 94 e9 00 	call	0x1d2	; 0x1d2 <main>
-  88:	0c 94 0a 02 	jmp	0x414	; 0x414 <_exit>
+  84:	0e 94 fd 00 	call	0x1fa	; 0x1fa <main>
+  88:	0c 94 8a 01 	jmp	0x314	; 0x314 <_exit>
 
 0000008c <__bad_interrupt>:
   8c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 00000090 <__vector_14>:
-
-volatile uint16_t      __ms = 0;
-volatile unsigned long __lastTimerSeconds = 0; // Should atleast 136 years
+	.high = 0xDA,
+	.extended = 0x05,
+};
 
 ISR(TIMER0_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli seconds
 {
@@ -100,540 +102,355 @@ ISR(TIMER0_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli
   96:	0f 92       	push	r0
   98:	11 24       	eor	r1, r1
   9a:	2f 93       	push	r18
-  9c:	8f 93       	push	r24
-  9e:	9f 93       	push	r25
-  a0:	af 93       	push	r26
-  a2:	bf 93       	push	r27
+  9c:	3f 93       	push	r19
+  9e:	4f 93       	push	r20
+  a0:	5f 93       	push	r21
+  a2:	6f 93       	push	r22
+  a4:	7f 93       	push	r23
+  a6:	8f 93       	push	r24
+  a8:	9f 93       	push	r25
+  aa:	af 93       	push	r26
+  ac:	bf 93       	push	r27
+  ae:	ef 93       	push	r30
+  b0:	ff 93       	push	r31
 	__ms++;
-  a4:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <__ms>
-  a8:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <__ms+0x1>
-  ac:	01 96       	adiw	r24, 0x01	; 1
-  ae:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <__ms+0x1>
-  b2:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <__ms>
+  b2:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <__ms>
+  b6:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <__ms+0x1>
+  ba:	01 96       	adiw	r24, 0x01	; 1
+  bc:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <__ms+0x1>
+  c0:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <__ms>
 	if(__ms > 1000) { // All Functions every seconds
-  b6:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <__ms>
-  ba:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <__ms+0x1>
-  be:	89 3e       	cpi	r24, 0xE9	; 233
-  c0:	93 40       	sbci	r25, 0x03	; 3
-  c2:	e8 f0       	brcs	.+58     	; 0xfe <__vector_14+0x6e>
+  c4:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <__ms>
+  c8:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <__ms+0x1>
+  cc:	89 3e       	cpi	r24, 0xE9	; 233
+  ce:	93 40       	sbci	r25, 0x03	; 3
+  d0:	18 f1       	brcs	.+70     	; 0x118 <__vector_14+0x88>
 		__lastTimerSeconds++;
-  c4:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <_edata>
-  c8:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <_edata+0x1>
-  cc:	a0 91 02 01 	lds	r26, 0x0102	; 0x800102 <_edata+0x2>
-  d0:	b0 91 03 01 	lds	r27, 0x0103	; 0x800103 <_edata+0x3>
-  d4:	01 96       	adiw	r24, 0x01	; 1
-  d6:	a1 1d       	adc	r26, r1
-  d8:	b1 1d       	adc	r27, r1
-  da:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <_edata>
-  de:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <_edata+0x1>
-  e2:	a0 93 02 01 	sts	0x0102, r26	; 0x800102 <_edata+0x2>
-  e6:	b0 93 03 01 	sts	0x0103, r27	; 0x800103 <_edata+0x3>
+  d2:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <_edata>
+  d6:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <_edata+0x1>
+  da:	a0 91 02 01 	lds	r26, 0x0102	; 0x800102 <_edata+0x2>
+  de:	b0 91 03 01 	lds	r27, 0x0103	; 0x800103 <_edata+0x3>
+  e2:	01 96       	adiw	r24, 0x01	; 1
+  e4:	a1 1d       	adc	r26, r1
+  e6:	b1 1d       	adc	r27, r1
+  e8:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <_edata>
+  ec:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <_edata+0x1>
+  f0:	a0 93 02 01 	sts	0x0102, r26	; 0x800102 <_edata+0x2>
+  f4:	b0 93 03 01 	sts	0x0103, r27	; 0x800103 <_edata+0x3>
 		__ms -= 1000;
-  ea:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <__ms>
-  ee:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <__ms+0x1>
-  f2:	88 5e       	subi	r24, 0xE8	; 232
-  f4:	93 40       	sbci	r25, 0x03	; 3
-  f6:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <__ms+0x1>
-  fa:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <__ms>
+  f8:	80 91 04 01 	lds	r24, 0x0104	; 0x800104 <__ms>
+  fc:	90 91 05 01 	lds	r25, 0x0105	; 0x800105 <__ms+0x1>
+ 100:	88 5e       	subi	r24, 0xE8	; 232
+ 102:	93 40       	sbci	r25, 0x03	; 3
+ 104:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <__ms+0x1>
+ 108:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <__ms>
+		toggle_pin(0x25, 5);
+ 10c:	65 e0       	ldi	r22, 0x05	; 5
+ 10e:	70 e0       	ldi	r23, 0x00	; 0
+ 110:	85 e2       	ldi	r24, 0x25	; 37
+ 112:	90 e0       	ldi	r25, 0x00	; 0
+ 114:	0e 94 6a 01 	call	0x2d4	; 0x2d4 <toggle_pin>
 		//updateRTC();
 	}
 	// Tutte le funzioni ogni milli secondo
 }
-  fe:	bf 91       	pop	r27
- 100:	af 91       	pop	r26
- 102:	9f 91       	pop	r25
- 104:	8f 91       	pop	r24
- 106:	2f 91       	pop	r18
- 108:	0f 90       	pop	r0
- 10a:	0f be       	out	0x3f, r0	; 63
- 10c:	0f 90       	pop	r0
- 10e:	1f 90       	pop	r1
- 110:	18 95       	reti
+ 118:	ff 91       	pop	r31
+ 11a:	ef 91       	pop	r30
+ 11c:	bf 91       	pop	r27
+ 11e:	af 91       	pop	r26
+ 120:	9f 91       	pop	r25
+ 122:	8f 91       	pop	r24
+ 124:	7f 91       	pop	r23
+ 126:	6f 91       	pop	r22
+ 128:	5f 91       	pop	r21
+ 12a:	4f 91       	pop	r20
+ 12c:	3f 91       	pop	r19
+ 12e:	2f 91       	pop	r18
+ 130:	0f 90       	pop	r0
+ 132:	0f be       	out	0x3f, r0	; 63
+ 134:	0f 90       	pop	r0
+ 136:	1f 90       	pop	r1
+ 138:	18 95       	reti
 
-00000112 <__vector_17>:
+0000013a <__vector_17>:
 
 extern uint32_t bufferDataToWrite;
 extern uint8_t  bufferDataToWrite_size;
 
 ISR(SPI_STC_vect) // ISR SPI finito
 {
- 112:	1f 92       	push	r1
- 114:	0f 92       	push	r0
- 116:	0f b6       	in	r0, 0x3f	; 63
- 118:	0f 92       	push	r0
- 11a:	11 24       	eor	r1, r1
- 11c:	2f 93       	push	r18
- 11e:	3f 93       	push	r19
- 120:	4f 93       	push	r20
- 122:	5f 93       	push	r21
- 124:	6f 93       	push	r22
- 126:	7f 93       	push	r23
- 128:	8f 93       	push	r24
- 12a:	9f 93       	push	r25
- 12c:	af 93       	push	r26
- 12e:	bf 93       	push	r27
- 130:	ef 93       	push	r30
- 132:	ff 93       	push	r31
+ 13a:	1f 92       	push	r1
+ 13c:	0f 92       	push	r0
+ 13e:	0f b6       	in	r0, 0x3f	; 63
+ 140:	0f 92       	push	r0
+ 142:	11 24       	eor	r1, r1
+ 144:	2f 93       	push	r18
+ 146:	3f 93       	push	r19
+ 148:	4f 93       	push	r20
+ 14a:	5f 93       	push	r21
+ 14c:	6f 93       	push	r22
+ 14e:	7f 93       	push	r23
+ 150:	8f 93       	push	r24
+ 152:	9f 93       	push	r25
+ 154:	af 93       	push	r26
+ 156:	bf 93       	push	r27
+ 158:	ef 93       	push	r30
+ 15a:	ff 93       	push	r31
 	switch(Sending) {
- 134:	80 91 06 01 	lds	r24, 0x0106	; 0x800106 <Sending>
- 138:	83 30       	cpi	r24, 0x03	; 3
- 13a:	18 f0       	brcs	.+6      	; 0x142 <__vector_17+0x30>
- 13c:	83 30       	cpi	r24, 0x03	; 3
- 13e:	31 f1       	breq	.+76     	; 0x18c <__vector_17+0x7a>
- 140:	35 c0       	rjmp	.+106    	; 0x1ac <__vector_17+0x9a>
+ 15c:	80 91 06 01 	lds	r24, 0x0106	; 0x800106 <Sending>
+ 160:	83 30       	cpi	r24, 0x03	; 3
+ 162:	18 f0       	brcs	.+6      	; 0x16a <__vector_17+0x30>
+ 164:	83 30       	cpi	r24, 0x03	; 3
+ 166:	31 f1       	breq	.+76     	; 0x1b4 <__vector_17+0x7a>
+ 168:	35 c0       	rjmp	.+106    	; 0x1d4 <__vector_17+0x9a>
 		case 0:
 		case 1:
 		case 2: if(bufferDataToWrite_size > 8) {
- 142:	80 91 07 01 	lds	r24, 0x0107	; 0x800107 <bufferDataToWrite_size>
- 146:	89 30       	cpi	r24, 0x09	; 9
- 148:	e0 f0       	brcs	.+56     	; 0x182 <__vector_17+0x70>
+ 16a:	80 91 07 01 	lds	r24, 0x0107	; 0x800107 <bufferDataToWrite_size>
+ 16e:	89 30       	cpi	r24, 0x09	; 9
+ 170:	e0 f0       	brcs	.+56     	; 0x1aa <__vector_17+0x70>
 			bufferDataToWrite_size -= 8;
- 14a:	88 50       	subi	r24, 0x08	; 8
- 14c:	80 93 07 01 	sts	0x0107, r24	; 0x800107 <bufferDataToWrite_size>
+ 172:	88 50       	subi	r24, 0x08	; 8
+ 174:	80 93 07 01 	sts	0x0107, r24	; 0x800107 <bufferDataToWrite_size>
 			uint8_t splicing[4];
 			*(uint32_t *)&splicing = bufferDataToWrite;
- 150:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <bufferDataToWrite>
- 154:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <bufferDataToWrite+0x1>
- 158:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <bufferDataToWrite+0x2>
- 15c:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <bufferDataToWrite+0x3>
+ 178:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <bufferDataToWrite>
+ 17c:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <bufferDataToWrite+0x1>
+ 180:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <bufferDataToWrite+0x2>
+ 184:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <bufferDataToWrite+0x3>
 			(bufferDataToWrite >>= 8);
- 160:	49 2f       	mov	r20, r25
- 162:	5a 2f       	mov	r21, r26
- 164:	6b 2f       	mov	r22, r27
- 166:	77 27       	eor	r23, r23
- 168:	40 93 08 01 	sts	0x0108, r20	; 0x800108 <bufferDataToWrite>
- 16c:	50 93 09 01 	sts	0x0109, r21	; 0x800109 <bufferDataToWrite+0x1>
- 170:	60 93 0a 01 	sts	0x010A, r22	; 0x80010a <bufferDataToWrite+0x2>
- 174:	70 93 0b 01 	sts	0x010B, r23	; 0x80010b <bufferDataToWrite+0x3>
+ 188:	49 2f       	mov	r20, r25
+ 18a:	5a 2f       	mov	r21, r26
+ 18c:	6b 2f       	mov	r22, r27
+ 18e:	77 27       	eor	r23, r23
+ 190:	40 93 08 01 	sts	0x0108, r20	; 0x800108 <bufferDataToWrite>
+ 194:	50 93 09 01 	sts	0x0109, r21	; 0x800109 <bufferDataToWrite+0x1>
+ 198:	60 93 0a 01 	sts	0x010A, r22	; 0x80010a <bufferDataToWrite+0x2>
+ 19c:	70 93 0b 01 	sts	0x010B, r23	; 0x80010b <bufferDataToWrite+0x3>
 			sendoverspi(splicing[3], 2);	
- 178:	62 e0       	ldi	r22, 0x02	; 2
- 17a:	8b 2f       	mov	r24, r27
- 17c:	0e 94 ac 01 	call	0x358	; 0x358 <sendoverspi>
- 180:	05 c0       	rjmp	.+10     	; 0x18c <__vector_17+0x7a>
+ 1a0:	62 e0       	ldi	r22, 0x02	; 2
+ 1a2:	8b 2f       	mov	r24, r27
+ 1a4:	0e 94 7f 01 	call	0x2fe	; 0x2fe <sendoverspi>
+ 1a8:	05 c0       	rjmp	.+10     	; 0x1b4 <__vector_17+0x7a>
 		} else {
 			uint8_t splicing[4];
 			*(uint32_t *)&splicing = bufferDataToWrite;
 			sendoverspi(splicing[3], 3);
- 182:	63 e0       	ldi	r22, 0x03	; 3
- 184:	80 91 0b 01 	lds	r24, 0x010B	; 0x80010b <bufferDataToWrite+0x3>
- 188:	0e 94 ac 01 	call	0x358	; 0x358 <sendoverspi>
+ 1aa:	63 e0       	ldi	r22, 0x03	; 3
+ 1ac:	80 91 0b 01 	lds	r24, 0x010B	; 0x80010b <bufferDataToWrite+0x3>
+ 1b0:	0e 94 7f 01 	call	0x2fe	; 0x2fe <sendoverspi>
 		}
 		case 3: bufferDataToWrite = 0; Sending = 0; toggle_pin(WCSN, 0); // Necessario per interrompere una trasmissione nel chip. // work in progress
- 18c:	10 92 08 01 	sts	0x0108, r1	; 0x800108 <bufferDataToWrite>
- 190:	10 92 09 01 	sts	0x0109, r1	; 0x800109 <bufferDataToWrite+0x1>
- 194:	10 92 0a 01 	sts	0x010A, r1	; 0x80010a <bufferDataToWrite+0x2>
- 198:	10 92 0b 01 	sts	0x010B, r1	; 0x80010b <bufferDataToWrite+0x3>
- 19c:	10 92 06 01 	sts	0x0106, r1	; 0x800106 <Sending>
- 1a0:	60 e0       	ldi	r22, 0x00	; 0
- 1a2:	70 e0       	ldi	r23, 0x00	; 0
- 1a4:	85 e2       	ldi	r24, 0x25	; 37
- 1a6:	90 e0       	ldi	r25, 0x00	; 0
- 1a8:	0e 94 4d 01 	call	0x29a	; 0x29a <toggle_pin>
+ 1b4:	10 92 08 01 	sts	0x0108, r1	; 0x800108 <bufferDataToWrite>
+ 1b8:	10 92 09 01 	sts	0x0109, r1	; 0x800109 <bufferDataToWrite+0x1>
+ 1bc:	10 92 0a 01 	sts	0x010A, r1	; 0x80010a <bufferDataToWrite+0x2>
+ 1c0:	10 92 0b 01 	sts	0x010B, r1	; 0x80010b <bufferDataToWrite+0x3>
+ 1c4:	10 92 06 01 	sts	0x0106, r1	; 0x800106 <Sending>
+ 1c8:	60 e0       	ldi	r22, 0x00	; 0
+ 1ca:	70 e0       	ldi	r23, 0x00	; 0
+ 1cc:	85 e2       	ldi	r24, 0x25	; 37
+ 1ce:	90 e0       	ldi	r25, 0x00	; 0
+ 1d0:	0e 94 6a 01 	call	0x2d4	; 0x2d4 <toggle_pin>
 		;
 	} 
 	Sending = 0;
- 1ac:	10 92 06 01 	sts	0x0106, r1	; 0x800106 <Sending>
+ 1d4:	10 92 06 01 	sts	0x0106, r1	; 0x800106 <Sending>
 }
- 1b0:	ff 91       	pop	r31
- 1b2:	ef 91       	pop	r30
- 1b4:	bf 91       	pop	r27
- 1b6:	af 91       	pop	r26
- 1b8:	9f 91       	pop	r25
- 1ba:	8f 91       	pop	r24
- 1bc:	7f 91       	pop	r23
- 1be:	6f 91       	pop	r22
- 1c0:	5f 91       	pop	r21
- 1c2:	4f 91       	pop	r20
- 1c4:	3f 91       	pop	r19
- 1c6:	2f 91       	pop	r18
- 1c8:	0f 90       	pop	r0
- 1ca:	0f be       	out	0x3f, r0	; 63
- 1cc:	0f 90       	pop	r0
- 1ce:	1f 90       	pop	r1
- 1d0:	18 95       	reti
+ 1d8:	ff 91       	pop	r31
+ 1da:	ef 91       	pop	r30
+ 1dc:	bf 91       	pop	r27
+ 1de:	af 91       	pop	r26
+ 1e0:	9f 91       	pop	r25
+ 1e2:	8f 91       	pop	r24
+ 1e4:	7f 91       	pop	r23
+ 1e6:	6f 91       	pop	r22
+ 1e8:	5f 91       	pop	r21
+ 1ea:	4f 91       	pop	r20
+ 1ec:	3f 91       	pop	r19
+ 1ee:	2f 91       	pop	r18
+ 1f0:	0f 90       	pop	r0
+ 1f2:	0f be       	out	0x3f, r0	; 63
+ 1f4:	0f 90       	pop	r0
+ 1f6:	1f 90       	pop	r1
+ 1f8:	18 95       	reti
 
-000001d2 <main>:
+000001fa <main>:
 
 int main(void)
 {
 	// Enable Interrupts and configs
 	(*(volatile uint8_t*) (0x5F)) |= (1 << 7); // Enable interrupts
- 1d2:	8f b7       	in	r24, 0x3f	; 63
- 1d4:	80 68       	ori	r24, 0x80	; 128
- 1d6:	8f bf       	out	0x3f, r24	; 63
+ 1fa:	8f b7       	in	r24, 0x3f	; 63
+ 1fc:	80 68       	ori	r24, 0x80	; 128
+ 1fe:	8f bf       	out	0x3f, r24	; 63
 	(*(volatile uint8_t*) (0x44)) |= (0b00000010); // Set the CTC mode
- 1d8:	84 b5       	in	r24, 0x24	; 36
- 1da:	82 60       	ori	r24, 0x02	; 2
- 1dc:	84 bd       	out	0x24, r24	; 36
+ 200:	84 b5       	in	r24, 0x24	; 36
+ 202:	82 60       	ori	r24, 0x02	; 2
+ 204:	84 bd       	out	0x24, r24	; 36
 	(*(volatile uint8_t*) (0x45)) |= (0b00000011); // Set prescaler to 64
- 1de:	85 b5       	in	r24, 0x25	; 37
- 1e0:	83 60       	ori	r24, 0x03	; 3
- 1e2:	85 bd       	out	0x25, r24	; 37
+ 206:	85 b5       	in	r24, 0x25	; 37
+ 208:	83 60       	ori	r24, 0x03	; 3
+ 20a:	85 bd       	out	0x25, r24	; 37
 	(*(volatile uint8_t*) (0x6E)) |= (0x02); // enable interrupts
- 1e4:	ee e6       	ldi	r30, 0x6E	; 110
- 1e6:	f0 e0       	ldi	r31, 0x00	; 0
- 1e8:	80 81       	ld	r24, Z
- 1ea:	82 60       	ori	r24, 0x02	; 2
- 1ec:	80 83       	st	Z, r24
-	(*(volatile uint8_t*) (0x47)) |= (0xFA); // Set comparator to 250
- 1ee:	87 b5       	in	r24, 0x27	; 39
- 1f0:	8a 6f       	ori	r24, 0xFA	; 250
- 1f2:	87 bd       	out	0x27, r24	; 39
-	// Enable Interrupts and configs
+ 20c:	ee e6       	ldi	r30, 0x6E	; 110
+ 20e:	f0 e0       	ldi	r31, 0x00	; 0
+ 210:	80 81       	ld	r24, Z
+ 212:	82 60       	ori	r24, 0x02	; 2
+ 214:	80 83       	st	Z, r24
+	(*(volatile uint8_t*) (0x47)) |= (0xFA); // Set comparator to 250 per il timer 
+ 216:	87 b5       	in	r24, 0x27	; 39
+ 218:	8a 6f       	ori	r24, 0xFA	; 250
+ 21a:	87 bd       	out	0x27, r24	; 39
+	// enable Wireless
+    //	startWireless();
+	// enable Wireless
+	// Enable interrupts and config
 	set_pin(ButtonUP, 5, INPUT, 0);
- 1f4:	20 e0       	ldi	r18, 0x00	; 0
- 1f6:	40 e0       	ldi	r20, 0x00	; 0
- 1f8:	65 e0       	ldi	r22, 0x05	; 5
- 1fa:	70 e0       	ldi	r23, 0x00	; 0
- 1fc:	8b e2       	ldi	r24, 0x2B	; 43
- 1fe:	90 e0       	ldi	r25, 0x00	; 0
- 200:	0e 94 1b 01 	call	0x236	; 0x236 <set_pin>
+ 21c:	20 e0       	ldi	r18, 0x00	; 0
+ 21e:	40 e0       	ldi	r20, 0x00	; 0
+ 220:	65 e0       	ldi	r22, 0x05	; 5
+ 222:	70 e0       	ldi	r23, 0x00	; 0
+ 224:	8b e2       	ldi	r24, 0x2B	; 43
+ 226:	90 e0       	ldi	r25, 0x00	; 0
+ 228:	0e 94 35 01 	call	0x26a	; 0x26a <set_pin>
 	set_pin(ButtonDOWN, 6, INPUT, 0);
- 204:	20 e0       	ldi	r18, 0x00	; 0
- 206:	40 e0       	ldi	r20, 0x00	; 0
- 208:	66 e0       	ldi	r22, 0x06	; 6
- 20a:	70 e0       	ldi	r23, 0x00	; 0
- 20c:	8b e2       	ldi	r24, 0x2B	; 43
- 20e:	90 e0       	ldi	r25, 0x00	; 0
- 210:	0e 94 1b 01 	call	0x236	; 0x236 <set_pin>
+ 22c:	20 e0       	ldi	r18, 0x00	; 0
+ 22e:	40 e0       	ldi	r20, 0x00	; 0
+ 230:	66 e0       	ldi	r22, 0x06	; 6
+ 232:	70 e0       	ldi	r23, 0x00	; 0
+ 234:	8b e2       	ldi	r24, 0x2B	; 43
+ 236:	90 e0       	ldi	r25, 0x00	; 0
+ 238:	0e 94 35 01 	call	0x26a	; 0x26a <set_pin>
 	set_pin(Speacker, 7, OUTPUT, 0);
- 214:	20 e0       	ldi	r18, 0x00	; 0
- 216:	41 e0       	ldi	r20, 0x01	; 1
- 218:	67 e0       	ldi	r22, 0x07	; 7
- 21a:	70 e0       	ldi	r23, 0x00	; 0
- 21c:	8b e2       	ldi	r24, 0x2B	; 43
- 21e:	90 e0       	ldi	r25, 0x00	; 0
- 220:	0e 94 1b 01 	call	0x236	; 0x236 <set_pin>
-	// enable Wireless
-	startWireless();
- 224:	0e 94 df 01 	call	0x3be	; 0x3be <startWireless>
-	// enable Wireless
+ 23c:	20 e0       	ldi	r18, 0x00	; 0
+ 23e:	41 e0       	ldi	r20, 0x01	; 1
+ 240:	67 e0       	ldi	r22, 0x07	; 7
+ 242:	70 e0       	ldi	r23, 0x00	; 0
+ 244:	8b e2       	ldi	r24, 0x2B	; 43
+ 246:	90 e0       	ldi	r25, 0x00	; 0
+ 248:	0e 94 35 01 	call	0x26a	; 0x26a <set_pin>
+	set_pin(0x25, 5, OUTPUT, 1);
+ 24c:	21 e0       	ldi	r18, 0x01	; 1
+ 24e:	41 e0       	ldi	r20, 0x01	; 1
+ 250:	65 e0       	ldi	r22, 0x05	; 5
+ 252:	70 e0       	ldi	r23, 0x00	; 0
+ 254:	85 e2       	ldi	r24, 0x25	; 37
+ 256:	90 e0       	ldi	r25, 0x00	; 0
+ 258:	0e 94 35 01 	call	0x26a	; 0x26a <set_pin>
+	// END
 	foo = 1;
- 228:	81 e0       	ldi	r24, 0x01	; 1
- 22a:	90 e0       	ldi	r25, 0x00	; 0
- 22c:	90 93 0d 01 	sts	0x010D, r25	; 0x80010d <foo+0x1>
- 230:	80 93 0c 01 	sts	0x010C, r24	; 0x80010c <foo>
- 234:	ff cf       	rjmp	.-2      	; 0x234 <main+0x62>
+ 25c:	81 e0       	ldi	r24, 0x01	; 1
+ 25e:	90 e0       	ldi	r25, 0x00	; 0
+ 260:	90 93 0d 01 	sts	0x010D, r25	; 0x80010d <foo+0x1>
+ 264:	80 93 0c 01 	sts	0x010C, r24	; 0x80010c <foo>
+ 268:	ff cf       	rjmp	.-2      	; 0x268 <main+0x6e>
 
-00000236 <set_pin>:
-extern volatile unsigned long __lastTimerSeconds; // Should atleast 136 years
-
-volatile uint8_t Sending = 0;
-
-
-void set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool LowHIGH) {
- 236:	fc 01       	movw	r30, r24
-	int DDR = (PORT) - 0x01;
- 238:	dc 01       	movw	r26, r24
- 23a:	11 97       	sbiw	r26, 0x01	; 1
-	if (INPOUT)  {
- 23c:	44 23       	and	r20, r20
- 23e:	89 f0       	breq	.+34     	; 0x262 <set_pin+0x2c>
-		// Pin output, default low
-		(*(volatile uint8_t *)(DDR)) |= (1 << PINNumb); // Pin output
- 240:	3c 91       	ld	r19, X
- 242:	81 e0       	ldi	r24, 0x01	; 1
- 244:	90 e0       	ldi	r25, 0x00	; 0
- 246:	06 2e       	mov	r0, r22
- 248:	02 c0       	rjmp	.+4      	; 0x24e <set_pin+0x18>
- 24a:	88 0f       	add	r24, r24
- 24c:	99 1f       	adc	r25, r25
- 24e:	0a 94       	dec	r0
- 250:	e2 f7       	brpl	.-8      	; 0x24a <set_pin+0x14>
- 252:	93 2f       	mov	r25, r19
- 254:	98 2b       	or	r25, r24
- 256:	9c 93       	st	X, r25
-		(*(volatile uint8_t *)(PORT)) &= (255^(1 << PINNumb) ); // Pin Low
- 258:	90 81       	ld	r25, Z
- 25a:	80 95       	com	r24
- 25c:	89 23       	and	r24, r25
- 25e:	80 83       	st	Z, r24
- 260:	0c c0       	rjmp	.+24     	; 0x27a <set_pin+0x44>
-	} else (*(volatile uint8_t *)(DDR)) &= (0xFF^(1 << PINNumb)); // Pin input
- 262:	3c 91       	ld	r19, X
- 264:	81 e0       	ldi	r24, 0x01	; 1
- 266:	90 e0       	ldi	r25, 0x00	; 0
- 268:	06 2e       	mov	r0, r22
- 26a:	02 c0       	rjmp	.+4      	; 0x270 <set_pin+0x3a>
- 26c:	88 0f       	add	r24, r24
- 26e:	99 1f       	adc	r25, r25
- 270:	0a 94       	dec	r0
- 272:	e2 f7       	brpl	.-8      	; 0x26c <set_pin+0x36>
- 274:	80 95       	com	r24
- 276:	83 23       	and	r24, r19
- 278:	8c 93       	st	X, r24
-	if(LowHIGH) {
- 27a:	22 23       	and	r18, r18
- 27c:	69 f0       	breq	.+26     	; 0x298 <set_pin+0x62>
-		// Set Pin High, --> set pin output
-		(*(volatile uint8_t *)(DDR)) |= (1 << PINNumb); // Pin Output
- 27e:	8c 91       	ld	r24, X
- 280:	21 e0       	ldi	r18, 0x01	; 1
- 282:	30 e0       	ldi	r19, 0x00	; 0
- 284:	02 c0       	rjmp	.+4      	; 0x28a <set_pin+0x54>
- 286:	22 0f       	add	r18, r18
- 288:	33 1f       	adc	r19, r19
- 28a:	6a 95       	dec	r22
- 28c:	e2 f7       	brpl	.-8      	; 0x286 <set_pin+0x50>
- 28e:	82 2b       	or	r24, r18
- 290:	8c 93       	st	X, r24
-		(*(volatile uint8_t *)(PORT)) |= (1 << PINNumb); } // Pin High
- 292:	80 81       	ld	r24, Z
- 294:	28 2b       	or	r18, r24
- 296:	20 83       	st	Z, r18
- 298:	08 95       	ret
-
-0000029a <toggle_pin>:
-}
-
-void toggle_pin(int PORT, int PINNumb) {
-	int DDR = (PORT) - 0x01;
-	// uint8_t* PIN = (PORT) - 0x02;
-	if( ((*(volatile uint8_t*)(DDR)) & (1 << PINNumb)) == (1 << PINNumb) ) { // Pin output
- 29a:	fc 01       	movw	r30, r24
- 29c:	31 97       	sbiw	r30, 0x01	; 1
- 29e:	40 81       	ld	r20, Z
- 2a0:	21 e0       	ldi	r18, 0x01	; 1
- 2a2:	30 e0       	ldi	r19, 0x00	; 0
- 2a4:	02 c0       	rjmp	.+4      	; 0x2aa <toggle_pin+0x10>
- 2a6:	22 0f       	add	r18, r18
- 2a8:	33 1f       	adc	r19, r19
- 2aa:	6a 95       	dec	r22
- 2ac:	e2 f7       	brpl	.-8      	; 0x2a6 <toggle_pin+0xc>
- 2ae:	50 e0       	ldi	r21, 0x00	; 0
- 2b0:	42 23       	and	r20, r18
- 2b2:	53 23       	and	r21, r19
- 2b4:	24 17       	cp	r18, r20
- 2b6:	35 07       	cpc	r19, r21
- 2b8:	21 f4       	brne	.+8      	; 0x2c2 <toggle_pin+0x28>
-		(*(volatile uint8_t*)(PORT)) ^= (1 << PINNumb); // Pin Toggled 
- 2ba:	fc 01       	movw	r30, r24
- 2bc:	30 81       	ld	r19, Z
- 2be:	23 27       	eor	r18, r19
- 2c0:	20 83       	st	Z, r18
- 2c2:	08 95       	ret
-
-000002c4 <getstatus_pin>:
-}
-
-_Bool getstatus_pin(int PORT, int PINNUmb) {
-	// work in progress
-	return 0;
-}
- 2c4:	80 e0       	ldi	r24, 0x00	; 0
- 2c6:	08 95       	ret
-
-000002c8 <start_SPI>:
-
-void start_SPI(int PORTMosi, int PORTMiso, int PORTSckl, _Bool MasterSlave, _Bool MSBLSBFirst, int clk, _Bool clkRisingFalling) {
- 2c8:	af 92       	push	r10
- 2ca:	bf 92       	push	r11
- 2cc:	cf 92       	push	r12
- 2ce:	ef 92       	push	r14
- 2d0:	ff 92       	push	r15
- 2d2:	0f 93       	push	r16
- 2d4:	cf 93       	push	r28
- 2d6:	df 93       	push	r29
- 2d8:	5c 01       	movw	r10, r24
- 2da:	7b 01       	movw	r14, r22
- 2dc:	ea 01       	movw	r28, r20
-	if(!MasterSlave) { // SPI as master
- 2de:	21 11       	cpse	r18, r1
- 2e0:	2b c0       	rjmp	.+86     	; 0x338 <start_SPI+0x70>
-	set_pin(PORTSS,   2, OUTPUT, 0);
- 2e2:	41 e0       	ldi	r20, 0x01	; 1
- 2e4:	62 e0       	ldi	r22, 0x02	; 2
- 2e6:	70 e0       	ldi	r23, 0x00	; 0
- 2e8:	85 e2       	ldi	r24, 0x25	; 37
- 2ea:	90 e0       	ldi	r25, 0x00	; 0
- 2ec:	0e 94 1b 01 	call	0x236	; 0x236 <set_pin>
-	set_pin(PORTMosi, 3, OUTPUT, 0);
- 2f0:	20 e0       	ldi	r18, 0x00	; 0
- 2f2:	41 e0       	ldi	r20, 0x01	; 1
- 2f4:	63 e0       	ldi	r22, 0x03	; 3
- 2f6:	70 e0       	ldi	r23, 0x00	; 0
- 2f8:	c5 01       	movw	r24, r10
- 2fa:	0e 94 1b 01 	call	0x236	; 0x236 <set_pin>
-	set_pin(PORTMiso, 4, INPUT,  0);
- 2fe:	20 e0       	ldi	r18, 0x00	; 0
- 300:	40 e0       	ldi	r20, 0x00	; 0
- 302:	64 e0       	ldi	r22, 0x04	; 4
- 304:	70 e0       	ldi	r23, 0x00	; 0
- 306:	c7 01       	movw	r24, r14
- 308:	0e 94 1b 01 	call	0x236	; 0x236 <set_pin>
-	set_pin(PORTSckl, 5, OUTPUT, 0); }
- 30c:	20 e0       	ldi	r18, 0x00	; 0
- 30e:	41 e0       	ldi	r20, 0x01	; 1
- 310:	65 e0       	ldi	r22, 0x05	; 5
- 312:	70 e0       	ldi	r23, 0x00	; 0
- 314:	ce 01       	movw	r24, r28
- 316:	0e 94 1b 01 	call	0x236	; 0x236 <set_pin>
-	SPCR = wRegister; 
- 31a:	82 ed       	ldi	r24, 0xD2	; 210
- 31c:	8c bd       	out	0x2c, r24	; 44
+0000026a <set_pin>:
 	// Setup as : Interrupt enabled (SPIE0 bit 7 set 1), Spi Enabled (SPE0 bit 6 set 1), MSB First (DORD bit 5 set 0),  Master Enabled (MSTR bit 4 set 1),
 	// clk Rising ( CPOL bit 3 set 0), bit 2 not use, SPI Clock Rate set as fosc/64 ( SPR [0, 1])
 	if(MasterSlave)     SPCR ^= (1 << MSTR);     // Setup as Slave , MSTR must be 0
 	if(MSBLSBFirst)     SPCR ^= (1 << DORD);     // Setup as LSB First, DRDB must be 1
- 31e:	00 23       	and	r16, r16
- 320:	21 f0       	breq	.+8      	; 0x32a <start_SPI+0x62>
- 322:	9c b5       	in	r25, 0x2c	; 44
- 324:	80 e2       	ldi	r24, 0x20	; 32
- 326:	89 27       	eor	r24, r25
- 328:	8c bd       	out	0x2c, r24	; 44
-	if(clkRisingFalling) SPCR ^= (1 << CPOL); // Setup as Falling Edge, CPOL must be 1
- 32a:	cc 20       	and	r12, r12
- 32c:	61 f0       	breq	.+24     	; 0x346 <start_SPI+0x7e>
- 32e:	9c b5       	in	r25, 0x2c	; 44
- 330:	88 e0       	ldi	r24, 0x08	; 8
- 332:	89 27       	eor	r24, r25
- 334:	8c bd       	out	0x2c, r24	; 44
-}
- 336:	07 c0       	rjmp	.+14     	; 0x346 <start_SPI+0x7e>
-	if(!MasterSlave) { // SPI as master
-	set_pin(PORTSS,   2, OUTPUT, 0);
-	set_pin(PORTMosi, 3, OUTPUT, 0);
-	set_pin(PORTMiso, 4, INPUT,  0);
-	set_pin(PORTSckl, 5, OUTPUT, 0); }
-	SPCR = wRegister; 
- 338:	82 ed       	ldi	r24, 0xD2	; 210
- 33a:	8c bd       	out	0x2c, r24	; 44
-	// Setup as : Interrupt enabled (SPIE0 bit 7 set 1), Spi Enabled (SPE0 bit 6 set 1), MSB First (DORD bit 5 set 0),  Master Enabled (MSTR bit 4 set 1),
-	// clk Rising ( CPOL bit 3 set 0), bit 2 not use, SPI Clock Rate set as fosc/64 ( SPR [0, 1])
-	if(MasterSlave)     SPCR ^= (1 << MSTR);     // Setup as Slave , MSTR must be 0
- 33c:	9c b5       	in	r25, 0x2c	; 44
- 33e:	80 e1       	ldi	r24, 0x10	; 16
- 340:	89 27       	eor	r24, r25
- 342:	8c bd       	out	0x2c, r24	; 44
- 344:	ec cf       	rjmp	.-40     	; 0x31e <start_SPI+0x56>
-	if(MSBLSBFirst)     SPCR ^= (1 << DORD);     // Setup as LSB First, DRDB must be 1
 	if(clkRisingFalling) SPCR ^= (1 << CPOL); // Setup as Falling Edge, CPOL must be 1
 }
- 346:	df 91       	pop	r29
- 348:	cf 91       	pop	r28
- 34a:	0f 91       	pop	r16
- 34c:	ff 90       	pop	r15
- 34e:	ef 90       	pop	r14
- 350:	cf 90       	pop	r12
- 352:	bf 90       	pop	r11
- 354:	af 90       	pop	r10
- 356:	08 95       	ret
+ 26a:	fc 01       	movw	r30, r24
+ 26c:	dc 01       	movw	r26, r24
+ 26e:	11 97       	sbiw	r26, 0x01	; 1
+ 270:	44 23       	and	r20, r20
+ 272:	a1 f0       	breq	.+40     	; 0x29c <set_pin+0x32>
+ 274:	3c 91       	ld	r19, X
+ 276:	81 e0       	ldi	r24, 0x01	; 1
+ 278:	90 e0       	ldi	r25, 0x00	; 0
+ 27a:	06 2e       	mov	r0, r22
+ 27c:	02 c0       	rjmp	.+4      	; 0x282 <set_pin+0x18>
+ 27e:	88 0f       	add	r24, r24
+ 280:	99 1f       	adc	r25, r25
+ 282:	0a 94       	dec	r0
+ 284:	e2 f7       	brpl	.-8      	; 0x27e <set_pin+0x14>
+ 286:	38 2b       	or	r19, r24
+ 288:	3c 93       	st	X, r19
+ 28a:	30 81       	ld	r19, Z
+ 28c:	41 e0       	ldi	r20, 0x01	; 1
+ 28e:	89 2b       	or	r24, r25
+ 290:	09 f0       	breq	.+2      	; 0x294 <set_pin+0x2a>
+ 292:	40 e0       	ldi	r20, 0x00	; 0
+ 294:	84 2f       	mov	r24, r20
+ 296:	83 23       	and	r24, r19
+ 298:	80 83       	st	Z, r24
+ 29a:	0c c0       	rjmp	.+24     	; 0x2b4 <set_pin+0x4a>
+ 29c:	3c 91       	ld	r19, X
+ 29e:	81 e0       	ldi	r24, 0x01	; 1
+ 2a0:	90 e0       	ldi	r25, 0x00	; 0
+ 2a2:	06 2e       	mov	r0, r22
+ 2a4:	02 c0       	rjmp	.+4      	; 0x2aa <set_pin+0x40>
+ 2a6:	88 0f       	add	r24, r24
+ 2a8:	99 1f       	adc	r25, r25
+ 2aa:	0a 94       	dec	r0
+ 2ac:	e2 f7       	brpl	.-8      	; 0x2a6 <set_pin+0x3c>
+ 2ae:	80 95       	com	r24
+ 2b0:	83 23       	and	r24, r19
+ 2b2:	8c 93       	st	X, r24
+ 2b4:	22 23       	and	r18, r18
+ 2b6:	69 f0       	breq	.+26     	; 0x2d2 <set_pin+0x68>
+ 2b8:	8c 91       	ld	r24, X
+ 2ba:	21 e0       	ldi	r18, 0x01	; 1
+ 2bc:	30 e0       	ldi	r19, 0x00	; 0
+ 2be:	02 c0       	rjmp	.+4      	; 0x2c4 <set_pin+0x5a>
+ 2c0:	22 0f       	add	r18, r18
+ 2c2:	33 1f       	adc	r19, r19
+ 2c4:	6a 95       	dec	r22
+ 2c6:	e2 f7       	brpl	.-8      	; 0x2c0 <set_pin+0x56>
+ 2c8:	82 2b       	or	r24, r18
+ 2ca:	8c 93       	st	X, r24
+ 2cc:	80 81       	ld	r24, Z
+ 2ce:	28 2b       	or	r18, r24
+ 2d0:	20 83       	st	Z, r18
+ 2d2:	08 95       	ret
 
-00000358 <sendoverspi>:
+000002d4 <toggle_pin>:
+ 2d4:	fc 01       	movw	r30, r24
+ 2d6:	31 97       	sbiw	r30, 0x01	; 1
+ 2d8:	40 81       	ld	r20, Z
+ 2da:	21 e0       	ldi	r18, 0x01	; 1
+ 2dc:	30 e0       	ldi	r19, 0x00	; 0
+ 2de:	02 c0       	rjmp	.+4      	; 0x2e4 <toggle_pin+0x10>
+ 2e0:	22 0f       	add	r18, r18
+ 2e2:	33 1f       	adc	r19, r19
+ 2e4:	6a 95       	dec	r22
+ 2e6:	e2 f7       	brpl	.-8      	; 0x2e0 <toggle_pin+0xc>
+ 2e8:	50 e0       	ldi	r21, 0x00	; 0
+ 2ea:	42 23       	and	r20, r18
+ 2ec:	53 23       	and	r21, r19
+ 2ee:	24 17       	cp	r18, r20
+ 2f0:	35 07       	cpc	r19, r21
+ 2f2:	21 f4       	brne	.+8      	; 0x2fc <toggle_pin+0x28>
+ 2f4:	fc 01       	movw	r30, r24
+ 2f6:	30 81       	ld	r19, Z
+ 2f8:	23 27       	eor	r18, r19
+ 2fa:	20 83       	st	Z, r18
+ 2fc:	08 95       	ret
+
+000002fe <sendoverspi>:
 
 _Bool sendoverspi(uint8_t _data, uint8_t action) {
 	if(Sending == 0) {
- 358:	90 91 06 01 	lds	r25, 0x0106	; 0x800106 <Sending>
- 35c:	91 11       	cpse	r25, r1
- 35e:	05 c0       	rjmp	.+10     	; 0x36a <sendoverspi+0x12>
+ 2fe:	90 91 06 01 	lds	r25, 0x0106	; 0x800106 <Sending>
+ 302:	91 11       	cpse	r25, r1
+ 304:	05 c0       	rjmp	.+10     	; 0x310 <sendoverspi+0x12>
 		Sending = action;
- 360:	60 93 06 01 	sts	0x0106, r22	; 0x800106 <Sending>
+ 306:	60 93 06 01 	sts	0x0106, r22	; 0x800106 <Sending>
 		SPDR = _data;
- 364:	8e bd       	out	0x2e, r24	; 46
+ 30a:	8e bd       	out	0x2e, r24	; 46
 		return 1;
- 366:	81 e0       	ldi	r24, 0x01	; 1
- 368:	08 95       	ret
+ 30c:	81 e0       	ldi	r24, 0x01	; 1
+ 30e:	08 95       	ret
 	}
 	return 0;
- 36a:	80 e0       	ldi	r24, 0x00	; 0
+ 310:	80 e0       	ldi	r24, 0x00	; 0
 }
- 36c:	08 95       	ret
+ 312:	08 95       	ret
 
-0000036e <wWrite_Register8>:
-	set_pin(WCSN, 0, OUTPUT, 1); // Il pin CSN deve essere impostato come output HIGH per un giusta transazione
-	toggle_pin(WCSN, 0); // Necessario per avviare una trasmissione nel chip.
-	bufferDataToWrite = datatowrite;
-	bufferDataToWrite_size = buflengh;
-	sendoverspi(hexadress, 2);
-}
- 36e:	cf 93       	push	r28
- 370:	df 93       	push	r29
- 372:	d8 2f       	mov	r29, r24
- 374:	c6 2f       	mov	r28, r22
- 376:	21 e0       	ldi	r18, 0x01	; 1
- 378:	41 e0       	ldi	r20, 0x01	; 1
- 37a:	60 e0       	ldi	r22, 0x00	; 0
- 37c:	70 e0       	ldi	r23, 0x00	; 0
- 37e:	85 e2       	ldi	r24, 0x25	; 37
- 380:	90 e0       	ldi	r25, 0x00	; 0
- 382:	0e 94 1b 01 	call	0x236	; 0x236 <set_pin>
- 386:	60 e0       	ldi	r22, 0x00	; 0
- 388:	70 e0       	ldi	r23, 0x00	; 0
- 38a:	85 e2       	ldi	r24, 0x25	; 37
- 38c:	90 e0       	ldi	r25, 0x00	; 0
- 38e:	0e 94 4d 01 	call	0x29a	; 0x29a <toggle_pin>
- 392:	8c 2f       	mov	r24, r28
- 394:	90 e0       	ldi	r25, 0x00	; 0
- 396:	a0 e0       	ldi	r26, 0x00	; 0
- 398:	b0 e0       	ldi	r27, 0x00	; 0
- 39a:	80 93 08 01 	sts	0x0108, r24	; 0x800108 <bufferDataToWrite>
- 39e:	90 93 09 01 	sts	0x0109, r25	; 0x800109 <bufferDataToWrite+0x1>
- 3a2:	a0 93 0a 01 	sts	0x010A, r26	; 0x80010a <bufferDataToWrite+0x2>
- 3a6:	b0 93 0b 01 	sts	0x010B, r27	; 0x80010b <bufferDataToWrite+0x3>
- 3aa:	88 e0       	ldi	r24, 0x08	; 8
- 3ac:	80 93 07 01 	sts	0x0107, r24	; 0x800107 <bufferDataToWrite_size>
- 3b0:	62 e0       	ldi	r22, 0x02	; 2
- 3b2:	8d 2f       	mov	r24, r29
- 3b4:	0e 94 ac 01 	call	0x358	; 0x358 <sendoverspi>
- 3b8:	df 91       	pop	r29
- 3ba:	cf 91       	pop	r28
- 3bc:	08 95       	ret
+00000314 <_exit>:
+ 314:	f8 94       	cli
 
-000003be <startWireless>:
-
-void startWireless() {
- 3be:	cf 92       	push	r12
- 3c0:	ef 92       	push	r14
- 3c2:	ff 92       	push	r15
- 3c4:	0f 93       	push	r16
-	// Check Vari
-	if(SPCR & (1<<SPE)) { // Spi enabled
- 3c6:	0c b4       	in	r0, 0x2c	; 44
- 3c8:	06 fe       	sbrs	r0, 6
- 3ca:	10 c0       	rjmp	.+32     	; 0x3ec <startWireless+0x2e>
-		if(SPCR == wRegister) { // SPi set as i wanna
- 3cc:	8c b5       	in	r24, 0x2c	; 44
- 3ce:	82 3d       	cpi	r24, 0xD2	; 210
- 3d0:	d1 f4       	brne	.+52     	; 0x406 <__LOCK_REGION_LENGTH__+0x6>
-			wWrite_Register8(0b01010000, 0b01110111);
- 3d2:	67 e7       	ldi	r22, 0x77	; 119
- 3d4:	80 e5       	ldi	r24, 0x50	; 80
- 3d6:	0e 94 b7 01 	call	0x36e	; 0x36e <wWrite_Register8>
-			while(!getstatus_pin(WCSN, 0)) { // Work in progress
- 3da:	60 e0       	ldi	r22, 0x00	; 0
- 3dc:	70 e0       	ldi	r23, 0x00	; 0
- 3de:	85 e2       	ldi	r24, 0x25	; 37
- 3e0:	90 e0       	ldi	r25, 0x00	; 0
- 3e2:	0e 94 62 01 	call	0x2c4	; 0x2c4 <getstatus_pin>
- 3e6:	88 23       	and	r24, r24
- 3e8:	c1 f3       	breq	.-16     	; 0x3da <startWireless+0x1c>
- 3ea:	0d c0       	rjmp	.+26     	; 0x406 <__LOCK_REGION_LENGTH__+0x6>
-				
-			}
-		}
-	} else start_SPI(PMosi, PMiso, PSckl, 0, 0, 0, 0); startWireless();
- 3ec:	c1 2c       	mov	r12, r1
- 3ee:	e1 2c       	mov	r14, r1
- 3f0:	f1 2c       	mov	r15, r1
- 3f2:	00 e0       	ldi	r16, 0x00	; 0
- 3f4:	20 e0       	ldi	r18, 0x00	; 0
- 3f6:	45 e2       	ldi	r20, 0x25	; 37
- 3f8:	50 e0       	ldi	r21, 0x00	; 0
- 3fa:	65 e2       	ldi	r22, 0x25	; 37
- 3fc:	70 e0       	ldi	r23, 0x00	; 0
- 3fe:	85 e2       	ldi	r24, 0x25	; 37
- 400:	90 e0       	ldi	r25, 0x00	; 0
- 402:	0e 94 64 01 	call	0x2c8	; 0x2c8 <start_SPI>
- 406:	0e 94 df 01 	call	0x3be	; 0x3be <startWireless>
-}
- 40a:	0f 91       	pop	r16
- 40c:	ff 90       	pop	r15
- 40e:	ef 90       	pop	r14
- 410:	cf 90       	pop	r12
- 412:	08 95       	ret
-
-00000414 <_exit>:
- 414:	f8 94       	cli
-
-00000416 <__stop_program>:
- 416:	ff cf       	rjmp	.-2      	; 0x416 <__stop_program>
+00000316 <__stop_program>:
+ 316:	ff cf       	rjmp	.-2      	; 0x316 <__stop_program>

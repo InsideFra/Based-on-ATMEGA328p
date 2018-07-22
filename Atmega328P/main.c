@@ -26,12 +26,20 @@ volatile extern uint8_t         Sending;
 volatile uint16_t      __ms = 0;
 volatile unsigned long __lastTimerSeconds = 0; // Should atleast 136 years
 
+FUSES =
+{
+	.low = 0xEF,
+	.high = 0xDA,
+	.extended = 0x05,
+};
+
 ISR(TIMER0_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli seconds
 {
 	__ms++;
 	if(__ms > 1000) { // All Functions every seconds
 		__lastTimerSeconds++;
 		__ms -= 1000;
+		toggle_pin(0x25, 5);
 		//updateRTC();
 	}
 	// Tutte le funzioni ogni milli secondo
@@ -42,7 +50,7 @@ extern uint8_t  bufferDataToWrite_size;
 
 ISR(SPI_STC_vect) // ISR SPI finito
 {
-	switch(Sending) {
+	/*switch(Sending) {
 		case 0:
 		case 1:
 		case 2: if(bufferDataToWrite_size > 8) {
@@ -59,7 +67,7 @@ ISR(SPI_STC_vect) // ISR SPI finito
 		case 3: bufferDataToWrite = 0; Sending = 0; toggle_pin(WCSN, 0); // Necessario per interrompere una trasmissione nel chip. // work in progress
 		;
 	} 
-	Sending = 0;
+	Sending = 0;*/
 }
 
 int main(void)
@@ -69,14 +77,16 @@ int main(void)
 	(*(volatile uint8_t*) (0x44)) |= (0b00000010); // Set the CTC mode
 	(*(volatile uint8_t*) (0x45)) |= (0b00000011); // Set prescaler to 64
 	(*(volatile uint8_t*) (0x6E)) |= (0x02); // enable interrupts
-	(*(volatile uint8_t*) (0x47)) |= (0xFA); // Set comparator to 250
-	// Enable Interrupts and configs
+	(*(volatile uint8_t*) (0x47)) |= (0xFA); // Set comparator to 250 per il timer 
+	// enable Wireless
+    //	startWireless();
+	// enable Wireless
+	// Enable interrupts and config
 	set_pin(ButtonUP, 5, INPUT, 0);
 	set_pin(ButtonDOWN, 6, INPUT, 0);
 	set_pin(Speacker, 7, OUTPUT, 0);
-	// enable Wireless
-	startWireless();
-	// enable Wireless
+	set_pin(0x25, 5, OUTPUT, 1);
+	// END
 	foo = 1;
     while (1) 
     {
