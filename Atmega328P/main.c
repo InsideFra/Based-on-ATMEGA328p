@@ -3,16 +3,16 @@
  *
  * Created: 25/02/2018 00:15:28
  * Author : franc
- * Il programma è alla base del sistema Termostato-Wireless
- * È un concetto semplice e sicuramente ben sviluppato nell`industria moderna
- * Porta però con se nuovi concetti chiave come la codifica dei codici wireless
+ * Il programma ï¿½ alla base del sistema Termostato-Wireless
+ * ï¿½ un concetto semplice e sicuramente ben sviluppato nell`industria moderna
+ * Porta perï¿½ con se nuovi concetti chiave come la codifica dei codici wireless
  * con token univoci rendendo impossibile l`hackeraggio da parte di man in the middle
- 
- * Verrà sviluppato poi in seguito anche un programma che gestirà tutta le animazioni
+
+ * Verrï¿½ sviluppato poi in seguito anche un programma che gestirï¿½ tutta le animazioni
  * dello schermo Oled, mantenendo al minimo l`utilizzo di memoria (compressione, azioni prestabilite)
- 
+
  * Successivamente verranno rilasciati anche i sorgenti dell`hardware
- */ 
+ */
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -20,8 +20,8 @@
 #include "Wireless/wThings.h"
 #include "define.h"
 
-extern int             foo;
-volatile extern uint8_t         Sending;
+extern int	foo;
+volatile extern uint8_t	Sending;
 
 volatile uint16_t      __ms = 0;
 volatile unsigned long __lastTimerSeconds = 0; // Should atleast 136 years
@@ -33,41 +33,57 @@ FUSES =
 	.extended = 0x05,
 };
 
+// Timers
+uint16_t Timer[10];
+uint16_t lastTimer[10];
+void     *pointerFunctionTimer[10];
+// END
 ISR(TIMER0_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli seconds
 {
 	__ms++;
+  for(uint8_t i = 0; i < 10; i++) {
+		if(Timer[i] != 0) {
+			if(lastTimer[i] < Timer[i]) {
+				lastTimer[i]++;
+			} else if(lastTimer[i] >= Timer[i]) {
+				// Azione
+				pointerFunctionTimer[i];
+			}
+		}
+	}
 	if(__ms > 1000) { // All Functions every seconds
 		__lastTimerSeconds++;
 		__ms -= 1000;
-		toggle_pin(0x25, 5);
-		//updateRTC();
+		updateRTC();
 	}
 	// Tutte le funzioni ogni milli secondo
 }
 
-extern uint32_t bufferDataToWrite;
-extern uint8_t  bufferDataToWrite_size;
+// Variabili SPI Wireless
+volatile extern uint32_t bufferDataToWrite32;
+volatile extern uint8_t  bufferDataToWrite;
+volatile extern _Bool	  bufferSize;
+// Variabili SPI Wireless
 
 ISR(SPI_STC_vect) // ISR SPI finito
 {
-	/*switch(Sending) {
+	switch(Sending) {
 		case 0:
 		case 1:
-		case 2: if(bufferDataToWrite_size > 8) {
-			bufferDataToWrite_size -= 8;
-			uint8_t splicing[4];
-			*(uint32_t *)&splicing = bufferDataToWrite;
-			(bufferDataToWrite >>= 8);
-			sendoverspi(splicing[3], 2);	
-		} else {
-			uint8_t splicing[4];
-			*(uint32_t *)&splicing = bufferDataToWrite;
-			sendoverspi(splicing[3], 3);
-		}
+		case 2:
+			if(!bufferSize) { // 32 bit
+				/*bufferDataToWrite_size -= 8;
+				uint8_t splicing[4];
+				*(uint32_t *)&splicing = bufferDataToWrite;
+				(bufferDataToWrite >>= 8);
+				sendoverspi(splicing[3], 2);*/
+			} else { // 8 bit
+				sendoverspi(bufferDataToWrite, 3);
+			}
 		case 3: bufferDataToWrite = 0; Sending = 0; toggle_pin(WCSN, 0); // Necessario per interrompere una trasmissione nel chip. // work in progress
 		;
-	} 
-	Sending = 0;*/
+	}
+	Sending = 0;
 }
 
 int main(void)
@@ -77,22 +93,23 @@ int main(void)
 	(*(volatile uint8_t*) (0x44)) |= (0b00000010); // Set the CTC mode
 	(*(volatile uint8_t*) (0x45)) |= (0b00000011); // Set prescaler to 64
 	(*(volatile uint8_t*) (0x6E)) |= (0x02); // enable interrupts
-	(*(volatile uint8_t*) (0x47)) |= (0xFA); // Set comparator to 250 per il timer 
+	(*(volatile uint8_t*) (0x47)) |= (0xFA); // Set comparator to 250 per il timer
+	// END
+
 	// enable Wireless
-    //	startWireless();
-	// enable Wireless
+    startWireless();
+	// END
+
 	// Enable interrupts and config
 	set_pin(ButtonUP, 5, INPUT, 0);
 	set_pin(ButtonDOWN, 6, INPUT, 0);
 	set_pin(Speacker, 7, OUTPUT, 0);
 	set_pin(0x25, 5, OUTPUT, 1);
 	// END
+
 	foo = 1;
-    while (1) 
+    while (1)
     {
-		
+
     }
 }
-
-
-

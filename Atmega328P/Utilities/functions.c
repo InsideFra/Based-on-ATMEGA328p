@@ -3,7 +3,7 @@
  *
  * Created: 04/03/2018 11:54:15
  *  Author: franc
- */ 
+ */
 
 #include "functions.h"
 #include "../define.h"
@@ -33,12 +33,12 @@ void toggle_pin(int PORT, int PINNumb) {
 	int DDR = (PORT) - 0x01;
 	// uint8_t* PIN = (PORT) - 0x02;
 	if( ((*(volatile uint8_t*)(DDR)) & (1 << PINNumb)) == (1 << PINNumb) ) { // Pin output
-		(*(volatile uint8_t*)(PORT)) ^= (1 << PINNumb); // Pin Toggled 
+		(*(volatile uint8_t*)(PORT)) ^= (1 << PINNumb); // Pin Toggled
 	}
 }
 
 _Bool getstatus_pin(int PORT, int PINNUmb) {
-	// work in progress
+	// work ins progress
 	return 0;
 }
 
@@ -48,7 +48,7 @@ void start_SPI(int PORTMosi, int PORTMiso, int PORTSckl, _Bool MasterSlave, _Boo
 	set_pin(PORTMosi, 3, OUTPUT, 0);
 	set_pin(PORTMiso, 4, INPUT,  0);
 	set_pin(PORTSckl, 5, OUTPUT, 0); }
-	SPCR = wRegister; 
+	SPCR = wRegister;
 	// Setup as : Interrupt enabled (SPIE0 bit 7 set 1), Spi Enabled (SPE0 bit 6 set 1), MSB First (DORD bit 5 set 0),  Master Enabled (MSTR bit 4 set 1),
 	// clk Rising ( CPOL bit 3 set 0), bit 2 not use, SPI Clock Rate set as fosc/64 ( SPR [0, 1])
 	if(MasterSlave)     SPCR ^= (1 << MSTR);     // Setup as Slave , MSTR must be 0
@@ -66,10 +66,10 @@ _Bool sendoverspi(uint8_t _data, uint8_t action) {
 }
 
 // Timers
-void updateRTC() {
-	
+void updateRTC() { // Funzione ogni secondo
+
 }
-// Timers
+// END
 
 struct time functTime() {
 	uint32_t allms =  __lastTimerSeconds;

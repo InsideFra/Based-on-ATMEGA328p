@@ -3,7 +3,7 @@
  *
  * Created: 04/03/2018 11:54:27
  *  Author: franc
- */ 
+ */
 
 #include <avr/io.h>
 
@@ -11,8 +11,6 @@
 #define FUNCTIONS_H_
 
 int foo;
-
-// RTC
 
 void set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool LowHIGH);
 void toggle_pin(int PORT, int PINNumb);
@@ -29,6 +27,9 @@ _Bool sendoverspi(uint8_t _data, uint8_t action);
 
 // Timers
 void updateRTC();
+
+void setNewTimer(uint16_t MS, _Bool Repeat, void* pointFunzione);
+void deleteTimer(uint8_t TimerNumber);
 //  End Timers
 
 struct time functTime();
