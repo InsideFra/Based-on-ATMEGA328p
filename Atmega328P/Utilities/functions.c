@@ -71,6 +71,6 @@ void updateRTC() { // Funzione ogni secondo
 }
 // END
 
-struct time functTime() {
-	uint32_t allms =  __lastTimerSeconds;
-};
+void defineTimer(uint8_t TimerNumber, uint8_t Mode, uint8_t prescaler) {
+
+}

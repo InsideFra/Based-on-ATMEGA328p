@@ -12,12 +12,14 @@
 
 int foo;
 
-void set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool LowHIGH);
-void toggle_pin(int PORT, int PINNumb);
+void* pointFunzTimer[6];
+
+void  set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool LowHIGH);
+void  toggle_pin(int PORT, int PINNumb);
 _Bool getstatus_pin(int PORT, int PINNUmb);
 
 // SPI
-void start_SPI(int PORTMosi, int PORTMiso, int PORTSckl, _Bool MasterSlave, _Bool MSBLSBFirst, int clk, _Bool clkRisingFalling);
+void  start_SPI(int PORTMosi, int PORTMiso, int PORTSckl, _Bool MasterSlave, _Bool MSBLSBFirst, int clk, _Bool clkRisingFalling);
 _Bool sendoverspi(uint8_t _data, uint8_t action);
 // End SPI
 
@@ -32,10 +34,18 @@ void setNewTimer(uint16_t MS, _Bool Repeat, void* pointFunzione);
 void deleteTimer(uint8_t TimerNumber);
 //  End Timers
 
-struct time functTime();
-
 void write_Register8(uint8_t Register, char Value);
-uint8_t read_Register8();
+uint8_t read_Register8(uint8_t HexAddress);
+
+void defineTimer(uint8_t TimerNumber, uint8_t Mode, uint8_t prescaler);
+void setTimerComp(uint8_t TimerNumber, _Bool ComparatorN, uint8_t ComparatorValue);
+void setTimerFunction(uint8_t TimerNumber, _Bool ComparatorN, void* PointerFunction);
+void delTimerFunction(uint8_t TimerNumber, _Bool ComparatorN);
+
+void setPWM(void* Funzione);
+void setFakePWM(void* Funzione);
+
+
 
 
 

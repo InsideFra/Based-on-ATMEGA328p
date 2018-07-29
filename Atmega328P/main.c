@@ -34,14 +34,14 @@ FUSES =
 };
 
 // Timers
-uint16_t Timer[10];
-uint16_t lastTimer[10];
-void     *pointerFunctionTimer[10];
+uint16_t Timer[MAXTIMERS];
+uint16_t lastTimer[MAXTIMERS];
+void     *pointerFunctionTimer[MAXTIMERS];
 // END
-ISR(TIMER0_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli seconds
+ISR(TIMER2_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli seconds
 {
 	__ms++;
-  for(uint8_t i = 0; i < 10; i++) {
+  for(uint8_t i = 0; i < MAXTIMERS; i++) {
 		if(Timer[i] != 0) {
 			if(lastTimer[i] < Timer[i]) {
 				lastTimer[i]++;
@@ -90,21 +90,35 @@ int main(void)
 {
 	// Enable Interrupts and configs
 	(*(volatile uint8_t*) (0x5F)) |= (1 << 7); // Enable interrupts
-	(*(volatile uint8_t*) (0x44)) |= (0b00000010); // Set the CTC mode
-	(*(volatile uint8_t*) (0x45)) |= (0b00000011); // Set prescaler to 64
-	(*(volatile uint8_t*) (0x6E)) |= (0x02); // enable interrupts
-	(*(volatile uint8_t*) (0x47)) |= (0xFA); // Set comparator to 250 per il timer
-	// END
+	// PWM LED Timer 0
+	(*(volatile uint8_t*) (0x44)) |= (0b01000001); // Set the Phase PWM Correct Mode, Toggle 0C0A (PWMLED) e Disconnect OC0B (Sensore Porta)
+	(*(volatile uint8_t*) (0x45)) |= (0b00001100); // Set prescaler to 256, PWM Correct Mode
+
+	(*(volatile uint8_t*) (0x6E)) |= (0x00); // NO interrupts
+	(*(volatile uint8_t*) (0x47)) |= (0x00); // Set comparator to 0%
+	// pwm lED Timer 0
+
+	// Counter Millisecondi Timer 2
+	(*(volatile uint8_t*) (0xB0)) |= (0x02); // Disconnect Timer 2 ports, SET CTC MODE
+	(*(volatile uint8_t*) (0xB1)) |= (0b00000100); // Set prescaler to 64, CTC MODE
+
+	(*(volatile uint8_t*) (0x70)) |= (0x02); // SI interrupts, only comp a
+	(*(volatile uint8_t*) (0xB3)) |= (0xFA); // Set comparator to 250
+	// Counter Millisecondi Timer 2
+
+	// INTERRUPT Porta PCINT21
+  (*PORTA(0x68)) = (0x08);
+	// INTERRUPT PORTA
 
 	// enable Wireless
     startWireless();
 	// END
 
 	// Enable interrupts and config
-	set_pin(ButtonUP, 5, INPUT, 0);
+	/*set_pin(ButtonUP, 5, INPUT, 0);
 	set_pin(ButtonDOWN, 6, INPUT, 0);
 	set_pin(Speacker, 7, OUTPUT, 0);
-	set_pin(0x25, 5, OUTPUT, 1);
+	set_pin(0x25, 5, OUTPUT, 1);*/
 	// END
 
 	foo = 1;
