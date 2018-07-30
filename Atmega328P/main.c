@@ -58,6 +58,12 @@ ISR(TIMER2_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli
 	}
 	// Tutte le funzioni ogni milli secondo
 }
+volatile uint8_t lastPIND;
+ISR(PCINT2_vect) {
+	uint8_t changedBits = 0x00;
+	changedBits = PIND ^ lastPIND;
+	lastPIND = PIND;
+}
 
 // Variabili SPI Wireless
 volatile extern uint32_t bufferDataToWrite32;
@@ -88,6 +94,8 @@ ISR(SPI_STC_vect) // ISR SPI finito
 
 int main(void)
 {
+	set_pin(SensorePorta, 5, INPUT,  0);
+	set_pin(LedPWM,       6, OUTPUT, 0);
 	// Enable Interrupts and configs
 	(*(volatile uint8_t*) (0x5F)) |= (1 << 7); // Enable interrupts
 	// PWM LED Timer 0
@@ -109,7 +117,7 @@ int main(void)
 	// INTERRUPT Porta PCINT21
   (*PORTA(0x68)) = (0x08);
 	// INTERRUPT PORTA
-
+  lastPIND = PIND;
 	// enable Wireless
     startWireless();
 	// END
