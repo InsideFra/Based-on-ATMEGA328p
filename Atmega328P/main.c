@@ -38,10 +38,12 @@ uint16_t Timer[MAXTIMERS];
 uint16_t lastTimer[MAXTIMERS];
 void     *pointerFunctionTimer[MAXTIMERS];
 // END
+
 ISR(TIMER2_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli seconds
 {
 	__ms++;
-  for(uint8_t i = 0; i < MAXTIMERS; i++) {
+
+	/*for(uint8_t i = 0; i < MAXTIMERS; i++) {
 		if(Timer[i] != 0) {
 			if(lastTimer[i] < Timer[i]) {
 				lastTimer[i]++;
@@ -50,8 +52,13 @@ ISR(TIMER2_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli
 				pointerFunctionTimer[i];
 			}
 		}
-	}
-	if(__ms > 1000) { // All Functions every seconds
+	} *
+		* Questa funzione non è necessaria per ora
+		* Gestisce i Timer in modo variabile
+	*/
+
+	if(__ms > 1000) {
+		// All Functions every seconds
 		__lastTimerSeconds++;
 		__ms -= 1000;
 		updateRTC();
@@ -59,10 +66,11 @@ ISR(TIMER2_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli
 	// Tutte le funzioni ogni milli secondo
 }
 volatile uint8_t lastPIND;
-ISR(PCINT2_vect) {
+
+ISR(PCINT2_vect) { // INTERRUPT PCINT2
 	uint8_t changedBits = 0x00;
-	changedBits = PIND ^ lastPIND;
-	lastPIND = PIND;
+	changedBits = PIND ^ lastPIND; // changedBits ti dice se e quale porta sia cambiata
+	lastPIND = PIND; // aggiorna varuabile lastPIND
 }
 
 // Variabili SPI Wireless
@@ -73,16 +81,13 @@ volatile extern _Bool	  bufferSize;
 
 ISR(SPI_STC_vect) // ISR SPI finito
 {
+	// Funzioni necessarie per lo SPI
 	switch(Sending) {
 		case 0:
 		case 1:
 		case 2:
 			if(!bufferSize) { // 32 bit
-				/*bufferDataToWrite_size -= 8;
-				uint8_t splicing[4];
-				*(uint32_t *)&splicing = bufferDataToWrite;
-				(bufferDataToWrite >>= 8);
-				sendoverspi(splicing[3], 2);*/
+
 			} else { // 8 bit
 				sendoverspi(bufferDataToWrite, 3);
 			}
@@ -98,6 +103,7 @@ int main(void)
 	set_pin(LedPWM,       6, OUTPUT, 0);
 	// Enable Interrupts and configs
 	(*(volatile uint8_t*) (0x5F)) |= (1 << 7); // Enable interrupts
+
 	// PWM LED Timer 0
 	(*(volatile uint8_t*) (0x44)) |= (0b01000001); // Set the Phase PWM Correct Mode, Toggle 0C0A (PWMLED) e Disconnect OC0B (Sensore Porta)
 	(*(volatile uint8_t*) (0x45)) |= (0b00001100); // Set prescaler to 256, PWM Correct Mode
@@ -118,20 +124,16 @@ int main(void)
   (*PORTA(0x68)) = (0x08);
 	// INTERRUPT PORTA
   lastPIND = PIND;
-	// enable Wireless
-    startWireless();
-	// END
 
-	// Enable interrupts and config
-	/*set_pin(ButtonUP, 5, INPUT, 0);
-	set_pin(ButtonDOWN, 6, INPUT, 0);
-	set_pin(Speacker, 7, OUTPUT, 0);
-	set_pin(0x25, 5, OUTPUT, 1);*/
+	// enable Wireless
+    /* startWireless();
+		*	 Meglio focalizzarsi prima sui Timer e funzioni basi
+		*  Successivamente Wireless & Wifi */
 	// END
 
 	foo = 1;
     while (1)
     {
-
+				// Do Something
     }
 }

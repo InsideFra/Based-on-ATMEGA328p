@@ -41,13 +41,9 @@ void wWrite_Register8(uint8_t hexadress, uint8_t datatowrite) {
     sendoverspi(hexadress, 2); while(Sending) {}
 }
 
-/*void wWrite_Register32(uint8_t hexadress, uint32_t datatowrite, uint8_t buflengh) {
-	set_pin(WCSN, 0, OUTPUT, 1); // Il pin CSN deve essere impostato come output HIGH per un giusta transazione
-	toggle_pin(WCSN, 0); // Necessario per avviare una trasmissione nel chip.
-	bufferDataToWrite = datatowrite;
-	bufferDataToWrite_size = buflengh;
-	sendoverspi(hexadress, 2);
-}*/
+void wWrite_Register32(uint8_t hexadress, uint32_t datatowrite, uint8_t buflengh) {
+
+}
 
 void startWireless() {
 	// Check Vari
