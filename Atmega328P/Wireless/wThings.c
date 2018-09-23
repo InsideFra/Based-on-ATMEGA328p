@@ -46,21 +46,32 @@ void wWrite_Register32(uint8_t hexadress, uint32_t datatowrite, uint8_t buflengh
 }
 
 void startWireless() {
-	// Check Vari
 	if(SPCR & (1<<SPE)) { // Spi enabled
-		if(SPCR == wRegister) { // SPi set as i wanna
-			wWrite_Register8(0b01010000, 0b01110111);
+		//if(SPCR == wRegister) { // SPi set as i wanna
+			wWrite_Register8(0b01000001, 0b01110111);
 			while(!getstatus_pin(WCSN, 0)) { // Work in progress
 
-      }
-		}
-	} else start_SPI(PMosi, PMiso, PSckl, 0, 0, 0, 0); startWireless();
+			}
+		//}
+	} else {
+		 spiconfig Spic = { 0, 0, 0, 0};
+		 start_SPI(Spic);
+		 startWireless();
+    }
 }
 
 uint8_t wRead_Register8(uint8_t hexadress) {
-
+	return 0;
 }
 
 uint32_t wRead_Register32(uint8_t hexadress) {
+	return 0;
+}
+
+void setRX() {
+	// PWR_UP 1 , PRIM_RX 1, CE 1
+}
+
+_Bool wSendPackage(uint8_t data) {
 
 }

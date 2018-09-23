@@ -8,5 +8,7 @@ main.c
 
 Utilities\functions.c
 
+Utilities\interrupts.c
+
 Wireless\wThings.c
 

@@ -151,6 +151,12 @@
     <Compile Include="Utilities\functions.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Utilities\interrupts.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utilities\interrupts.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Wireless\wThings.c">
       <SubType>compile</SubType>
     </Compile>
