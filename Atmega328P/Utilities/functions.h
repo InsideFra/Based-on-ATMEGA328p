@@ -19,13 +19,31 @@ void  toggle_pin(int PORT, int PINNumb);
 _Bool getstatus_pin(int PORT, int PINNUmb);
 
 // SPI
-void  start_SPI(int PORTMosi, int PORTMiso, int PORTSckl, _Bool MasterSlave, _Bool MSBLSBFirst, int clk, _Bool clkRisingFalling);
+typedef struct SPIConfigs {
+  _Bool MasterSlave;
+  _Bool MSBLSBFirst;
+  uint8_t clk;
+  _Bool clkRisingFalling;
+} spiconfig;
+void  start_SPI(spiconfig SPIC);
 _Bool sendoverspi(uint8_t _data, uint8_t action);
 // End SPI
 
 // i2c
 
 // End i2c
+
+// USART
+volatile uint8_t UsartBufferData;
+volatile uint8_t SendingUSART;
+typedef struct USARTConfig {
+  uint8_t Baudrate;
+  uint8_t FrameFormat;
+  uint8_t TransmitterReceiver;
+} usartdata;
+void startUSART(usartdata __usartconfig);
+void sendoverUSART(uint8_t __message);
+// USART
 
 // Timers
 void updateRTC();
@@ -44,9 +62,5 @@ void delTimerFunction(uint8_t TimerNumber, _Bool ComparatorN);
 
 void setPWM(void* Funzione);
 void setFakePWM(void* Funzione);
-
-
-
-
 
 #endif /* FUNCTIONS_H_ */
