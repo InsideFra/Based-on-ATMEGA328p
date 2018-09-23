@@ -17,113 +17,52 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "Utilities/functions.h"
+#include "Utilities/interrupts.h"
 #include "Wireless/wThings.h"
 #include "define.h"
 
 extern int	foo;
 volatile extern uint8_t	Sending;
+volatile extern uint8_t UsartBufferData;
+volatile extern uint8_t SendingUSART;
 
-volatile uint16_t      __ms = 0;
-volatile unsigned long __lastTimerSeconds = 0; // Should atleast 136 years
+volatile extern uint8_t Ocrlast;
+volatile extern _Bool   LedOn;
+volatile extern _Bool   Reverse;
+volatile extern _Bool   startLed;
 
-FUSES =
-{
-	.low = 0xEF,
-	.high = 0xDA,
-	.extended = 0x05,
-};
+extern volatile uint8_t lastPIND;
 
-// Timers
-uint16_t Timer[MAXTIMERS];
-uint16_t lastTimer[MAXTIMERS];
-void     *pointerFunctionTimer[MAXTIMERS];
-// END
-
-ISR(TIMER2_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli seconds
-{
-	__ms++;
-
-	/*for(uint8_t i = 0; i < MAXTIMERS; i++) {
-		if(Timer[i] != 0) {
-			if(lastTimer[i] < Timer[i]) {
-				lastTimer[i]++;
-			} else if(lastTimer[i] >= Timer[i]) {
-				// Azione
-				pointerFunctionTimer[i];
-			}
-		}
-	} *
-		* Questa funzione non è necessaria per ora
-		* Gestisce i Timer in modo variabile
-	*/
-
-	if(__ms > 1000) {
-		// All Functions every seconds
-		__lastTimerSeconds++;
-		__ms -= 1000;
-		updateRTC();
-	}
-	// Tutte le funzioni ogni milli secondo
-}
-volatile uint8_t lastPIND;
-
-ISR(PCINT2_vect) { // INTERRUPT PCINT2
-	uint8_t changedBits = 0x00;
-	changedBits = PIND ^ lastPIND; // changedBits ti dice se e quale porta sia cambiata
-	lastPIND = PIND; // aggiorna varuabile lastPIND
-}
-
-// Variabili SPI Wireless
-volatile extern uint32_t bufferDataToWrite32;
-volatile extern uint8_t  bufferDataToWrite;
-volatile extern _Bool	  bufferSize;
-// Variabili SPI Wireless
-
-ISR(SPI_STC_vect) // ISR SPI finito
-{
-	// Funzioni necessarie per lo SPI
-	switch(Sending) {
-		case 0:
-		case 1:
-		case 2:
-			if(!bufferSize) { // 32 bit
-
-			} else { // 8 bit
-				sendoverspi(bufferDataToWrite, 3);
-			}
-		case 3: bufferDataToWrite = 0; Sending = 0; toggle_pin(WCSN, 0); // Necessario per interrompere una trasmissione nel chip. // work in progress
-		;
-	}
-	Sending = 0;
-}
 
 int main(void)
 {
+  // USART
+  SendingUSART = 0;
+	UsartBufferData = 0;
+	// USART
+
 	set_pin(SensorePorta, 5, INPUT,  0);
 	set_pin(LedPWM,       6, OUTPUT, 0);
+
 	// Enable Interrupts and configs
-	(*(volatile uint8_t*) (0x5F)) |= (1 << 7); // Enable interrupts
+	//(*(volatile uint8_t*) (0x5F)) |= (1 << 7); // Enable interrupts
+	sei();
 
-	// PWM LED Timer 0
-	(*(volatile uint8_t*) (0x44)) |= (0b01000001); // Set the Phase PWM Correct Mode, Toggle 0C0A (PWMLED) e Disconnect OC0B (Sensore Porta)
-	(*(volatile uint8_t*) (0x45)) |= (0b00001100); // Set prescaler to 256, PWM Correct Mode
+	// PWM Led on PD6
 
-	(*(volatile uint8_t*) (0x6E)) |= (0x00); // NO interrupts
-	(*(volatile uint8_t*) (0x47)) |= (0x00); // Set comparator to 0%
-	// pwm lED Timer 0
+  OCR0A = 0; // set PWM for 50% duty cycle
+  TCCR0A |= (1 << COM0A1); // set none-inverting mode
+  TCCR0A |= (1 << WGM01) | (1 << WGM00); // set fast PWM Mode
+  TCCR0B |= (1 << CS01); // set prescaler to 8 and starts PWM
 
-	// Counter Millisecondi Timer 2
-	(*(volatile uint8_t*) (0xB0)) |= (0x02); // Disconnect Timer 2 ports, SET CTC MODE
-	(*(volatile uint8_t*) (0xB1)) |= (0b00000100); // Set prescaler to 64, CTC MODE
-
-	(*(volatile uint8_t*) (0x70)) |= (0x02); // SI interrupts, only comp a
-	(*(volatile uint8_t*) (0xB3)) |= (0xFA); // Set comparator to 250
-	// Counter Millisecondi Timer 2
+	// PWM Led on PD6
 
 	// INTERRUPT Porta PCINT21
-  (*PORTA(0x68)) = (0x08);
+  //(*PORTA(0x68)) = 0b00000100;
+	PCICR   |= (1 << PCIE2);
+	PCMSK2  |= (1 << 5);
 	// INTERRUPT PORTA
-  lastPIND = PIND;
+    lastPIND = PIND;
 
 	// enable Wireless
     /* startWireless();
@@ -131,6 +70,7 @@ int main(void)
 		*  Successivamente Wireless & Wifi */
 	// END
 
+	//start_SPI(spiconfig Spic = {0, 0, 0, 0});
 	foo = 1;
     while (1)
     {

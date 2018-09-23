@@ -11,7 +11,7 @@
 
 #define F_CPU 16000000
 
-#define PORTA (volatile uint8_t*)
+#define PORTA *(volatile uint8_t*)
 
 #define PMiso 0x25 // pin 4
 #define PMosi 0x25 // pin 3
@@ -43,6 +43,10 @@
 #define wRegister 0b11010010
 
 #define MAXTIMERS 10
+#define delayTimerPWM   Timer8[0]
+#define lastTimerLedOn  Timer8[1]
+#define MAXTIMELED			20
+
 
 struct time {
 	uint8_t Secondi;
