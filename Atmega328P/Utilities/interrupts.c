@@ -14,6 +14,9 @@ volatile uint8_t Ocrlast = 0;
 volatile _Bool   LedOn = 0;
 volatile _Bool   Reverse = 0;
 volatile _Bool   startLed = 0;
+volatile uint8_t tempTimerLed = 10;
+
+extern volatile times 	 Orario;
 
 void main1() {
 	// Counter Millisecondi Timer 2
@@ -21,7 +24,7 @@ void main1() {
 	(*(volatile uint8_t*) (0xB1)) |= (0b00000100); // Set prescaler to 64, CTC MODE
 	(*(volatile uint8_t*) (0x70)) |= (0x02); // SI interrupts, only comp a
 	(*(volatile uint8_t*) (0xB3)) |= (0xFA); // Set comparator to 250
-	// Counter Millisecondi Timer 2 
+	// Counter Millisecondi Timer 2
 }
 
 ISR(TIMER2_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli seconds
@@ -31,11 +34,12 @@ ISR(TIMER2_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli
     __ms -= 1000;
     __lastTimerSeconds++;
     if(!lastTimerLedOn) lastTimerLedOn++;
+		refreshEEPROM++; if(refreshEEPROM >= 250) refreshEEPROM = 0; updateEEPROM();
     updateRTC();
   }
   if(startLed) {
       delayTimerPWM++;
-      if(delayTimerPWM >= 10) {
+      if(delayTimerPWM >= tempTimerLed) {
         delayTimerPWM = 0;
         OCR0A = ( Reverse ? (OCR0A - 3) : (OCR0A + 3) );
         Ocrlast = OCR0A;

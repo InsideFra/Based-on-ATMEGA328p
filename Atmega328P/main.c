@@ -33,47 +33,76 @@ volatile extern _Bool   startLed;
 
 extern volatile uint8_t lastPIND;
 
+volatile        times    Orario = {0};
+volatile        times    OrarioInizioLed = {0};
+volatile        times    OrarioFineLed = {0};
+volatile extern uint8_t tempTimerLed;
+
+
 
 int main(void)
 {
-  // USART
-  SendingUSART = 0;
+   // USART
+    SendingUSART = 0;
 	UsartBufferData = 0;
 	// USART
 
 	set_pin(SensorePorta, 5, INPUT,  0);
 	set_pin(LedPWM,       6, OUTPUT, 0);
 
+  // Load Orario from EEPROM
+  EEARH = 0x00; EEARL = 0x00;
+  EECR = 0x00;
+  EECR |= (1 << EERIE) | (1 << EERE);
+  Orario.Secondi = EEDR;
+  EEARH = 0x00; EEARL = 0x01;
+  EECR |= (1 << EERE);
+  Orario.Minuti = EEDR;
+  EEARH = 0x00; EEARL = 0x02;
+  EECR |= (1 << EERE);
+  Orario.Ore = EEDR;
+  EEARH = 0x00; EEARL = 0x03;
+  EECR |= (1 << EERE);
+  Orario.Giorno = EEDR;
+  EEARH = 0x00; EEARL = 0x04;
+  EECR |= (1 << EERE);
+  Orario.Mesi = EEDR;
+  EEARH = 0x00; EEARL = 0x05;
+  EECR |= (1 << EEDR);
+  EEARH = 0x00; EEARL = 0x00;
+  // Load Orario from EEPROM
+
 	// Enable Interrupts and configs
 	//(*(volatile uint8_t*) (0x5F)) |= (1 << 7); // Enable interrupts
 	sei();
 
 	// PWM Led on PD6
-
   OCR0A = 0; // set PWM for 50% duty cycle
   TCCR0A |= (1 << COM0A1); // set none-inverting mode
   TCCR0A |= (1 << WGM01) | (1 << WGM00); // set fast PWM Mode
   TCCR0B |= (1 << CS01); // set prescaler to 8 and starts PWM
-
-	// PWM Led on PD6
+  // PWM Led on PD6
 
 	// INTERRUPT Porta PCINT21
   //(*PORTA(0x68)) = 0b00000100;
 	PCICR   |= (1 << PCIE2);
 	PCMSK2  |= (1 << 5);
 	// INTERRUPT PORTA
-    lastPIND = PIND;
+  lastPIND = PIND;
 
-	// enable Wireless
+  // enable Wireless
     /* startWireless();
 		*	 Meglio focalizzarsi prima sui Timer e funzioni basi
 		*  Successivamente Wireless & Wifi */
 	// END
 
 	//start_SPI(spiconfig Spic = {0, 0, 0, 0});
+
 	foo = 1;
+    tempTimerLed = 50; startLed = 1; // Accensione dei Led
+
     while (1)
     {
-				// Do Something
+		// Do Something
     }
 }

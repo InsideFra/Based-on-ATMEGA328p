@@ -45,16 +45,16 @@
 #define MAXTIMERS 10
 #define delayTimerPWM   Timer8[0]
 #define lastTimerLedOn  Timer8[1]
+#define refreshEEPROM   Timer8[2]
 #define MAXTIMELED			20
 
-
-struct time {
+typedef struct time {
 	uint8_t Secondi;
 	uint8_t Minuti;
 	uint8_t Ore;
 	uint8_t Giorno;
 	uint8_t Mesi;
 	uint8_t Anno; // Since 1999 to 2135
-};
+} times;
 
 #endif /* DEFINE_H_ */

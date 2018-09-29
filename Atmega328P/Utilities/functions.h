@@ -47,6 +47,7 @@ void sendoverUSART(uint8_t __message);
 
 // Timers
 void updateRTC();
+void updateEEPROM();
 
 void setNewTimer(uint16_t MS, _Bool Repeat, void* pointFunzione);
 void deleteTimer(uint8_t TimerNumber);
@@ -62,5 +63,7 @@ void delTimerFunction(uint8_t TimerNumber, _Bool ComparatorN);
 
 void setPWM(void* Funzione);
 void setFakePWM(void* Funzione);
+
+void EEPROM_write(uint8_t uiAddress, uint8_t data);
 
 #endif /* FUNCTIONS_H_ */
