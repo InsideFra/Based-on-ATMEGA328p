@@ -1,12 +1,19 @@
-# Termostato-Wireless
+# Progetto a base di ATMEGA328P
 
 Inizio progetto. Fase primoridale
 
-Temporanea formula per upload su Arduino Nano:
-avrdude -CC:\Program Files (x86)\Arduino\hardware\tools\avr/etc/avrdude.conf -v -patmega328p -carduino -PCOM4 -b57600 -D -Uflash:w:C:\Users\franc\Documents\GitHub\Termostato-Wireless\Atmega328P\Debug\Atmega328P.hex:i
+<del>Temporanea formula per upload su Arduino Nano:
+avrdude -CC:\Program Files (x86)\Arduino\hardware\tools\avr/etc/avrdude.conf -v -patmega328p -carduino -PCOM4 -b57600 -D -Uflash:w:C:\Users\franc\Documents\GitHub\Termostato-Wireless\Atmega328P\Debug\Atmega328P.hex:i</del>
+
+I programmer usati in questo progetto saranno:
+- AVRISP
+- ESP8266
+Software per programmare: avrdude
+
+Entrambi si basano sul protocollo ISP (<b>I</b>n Sistem Programming) di base sulla maggior parte degli AVR
 
 #Wireless Part
-          Wireless Network Criptato, Unico, Anti-Maninthemiddle
+          Wireless Network Criptato, Unico, Anti-Man_in_the_middle
 Elemento distintivo è la codifica per ogni trasmissione via aria
 Attacca man in the middle impossibile utilizzando Token Privati, Pubblici, e temporanei (ricavabili tramite formula)
 Comunicazione P2P, o in PoverP (network)
@@ -28,3 +35,7 @@ Token                 Token
 Device compatibili
 -nRF24l01+
 #Wireless Part
+
+#Features
+
+#Features
