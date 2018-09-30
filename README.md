@@ -6,8 +6,9 @@ Inizio progetto. Fase primoridale
 avrdude -CC:\Program Files (x86)\Arduino\hardware\tools\avr/etc/avrdude.conf -v -patmega328p -carduino -PCOM4 -b57600 -D -Uflash:w:C:\Users\franc\Documents\GitHub\Termostato-Wireless\Atmega328P\Debug\Atmega328P.hex:i</del>
 
 I programmer usati in questo progetto saranno:
-- AVRISP
-- ESP8266
+AVRISP
+ESP8266  
+
 Software per programmare: avrdude
 
 Entrambi si basano sul protocollo ISP (<b>I</b>n <b>S</b>istem <b>P</b>rogramming) di base sulla maggior parte degli AVR
@@ -39,7 +40,7 @@ Device compatibili
 #Features
 - Orario Dinamico, salvataggio su EEPROM
 - INTERRUPT ogni millisecondo
- -- Funzioni ogni secondo
- -- <small>Timer personalizzati</small>
- -- Interrupt Porta D, Pin 5 
+ - Funzioni ogni secondo
+ - <small>Timer personalizzati</small>
+ - Interrupt Porta D, Pin 5
 #Features
