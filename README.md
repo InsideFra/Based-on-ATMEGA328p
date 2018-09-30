@@ -10,7 +10,7 @@ I programmer usati in questo progetto saranno:
 - ESP8266
 Software per programmare: avrdude
 
-Entrambi si basano sul protocollo ISP (<b>I</b>n Sistem Programming) di base sulla maggior parte degli AVR
+Entrambi si basano sul protocollo ISP (<b>I</b>n <b>S</b>istem <b>P</b>rogramming) di base sulla maggior parte degli AVR
 
 #Wireless Part
           Wireless Network Criptato, Unico, Anti-Man_in_the_middle
@@ -37,5 +37,9 @@ Device compatibili
 #Wireless Part
 
 #Features
-
+- Orario Dinamico, salvataggio su EEPROM
+- INTERRUPT ogni millisecondo
+ -- Funzioni ogni secondo
+ -- <small>Timer personalizzati</small>
+ -- Interrupt Porta D, Pin 5 
 #Features

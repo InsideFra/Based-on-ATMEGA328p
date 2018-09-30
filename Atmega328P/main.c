@@ -31,24 +31,21 @@ volatile extern _Bool   LedOn;
 volatile extern _Bool   Reverse;
 volatile extern _Bool   startLed;
 
-extern volatile uint8_t lastPIND;
+volatile extern uint8_t lastPIND;
 
+volatile extern uint8_t tempTimerLed;
 volatile        times    Orario = {0};
 volatile        times    OrarioInizioLed = {0};
 volatile        times    OrarioFineLed = {0};
-volatile extern uint8_t tempTimerLed;
 
 
 
 int main(void)
 {
-   // USART
-    SendingUSART = 0;
-	UsartBufferData = 0;
-	// USART
-
-	set_pin(SensorePorta, 5, INPUT,  0);
-	set_pin(LedPWM,       6, OUTPUT, 0);
+	// User Custom Program
+  set_pin(SensorePorta, 5, INPUT,  0);
+  set_pin(LedPWM,       6, OUTPUT, 0);
+	// User Custom Program
 
   // Load Orario from EEPROM
   EEARH = 0x00; EEARL = 0x00;
@@ -72,9 +69,7 @@ int main(void)
   EEARH = 0x00; EEARL = 0x00;
   // Load Orario from EEPROM
 
-	// Enable Interrupts and configs
-	//(*(volatile uint8_t*) (0x5F)) |= (1 << 7); // Enable interrupts
-	sei();
+  sei(); // Enable Interrupts
 
 	// PWM Led on PD6
   OCR0A = 0; // set PWM for 50% duty cycle
@@ -88,21 +83,13 @@ int main(void)
 	PCICR   |= (1 << PCIE2);
 	PCMSK2  |= (1 << 5);
 	// INTERRUPT PORTA
-  lastPIND = PIND;
-
-  // enable Wireless
-    /* startWireless();
-		*	 Meglio focalizzarsi prima sui Timer e funzioni basi
-		*  Successivamente Wireless & Wifi */
-	// END
-
-	//start_SPI(spiconfig Spic = {0, 0, 0, 0});
+   lastPIND = PIND;
 
 	foo = 1;
-    tempTimerLed = 50; startLed = 1; // Accensione dei Led
+  tempTimerLed = 50; startLed = 1; // Accensione dei Led
 
-    while (1)
-    {
+  while (1)
+  {
 		// Do Something
-    }
+  }
 }

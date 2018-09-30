@@ -9,6 +9,8 @@
 #ifndef DRIVERS_H_
 #define DRIVERS_H_
 
+void LoadDriverInMemory();
+void DiscardDriverFromMemory();
 
 
 

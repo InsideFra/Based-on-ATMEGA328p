@@ -11,9 +11,10 @@
 #include <avr/interrupt.h>
 #include <string.h>
 #include "interrupts.h"
+#include "drivers.h"
 
 extern volatile uint16_t __ms;
-extern volatile unsigned long __lastTimerSeconds; // Should atleast 136 years
+extern volatile unsigned long __lastTimerSeconds; // Should at least 136 years
 
 volatile uint8_t Sending = 0;
 
@@ -74,7 +75,7 @@ _Bool sendoverspi(uint8_t _data, uint8_t action) {
 	return 0;
 }
 
-// Timers
+// Orologio - Orario
 void updateRTC() { // Funzione ogni secondo
 		Orario.Secondi++;
 		if(Orario.Secondi >= 60) {
@@ -89,15 +90,17 @@ void updateRTC() { // Funzione ogni secondo
 			}
 		}
 }
-// END
+// Orologio - Orario 
 
 void updateEEPROM() {
+	// User Custom Program
 	EEPROM_write(0x00, Orario.Secondi);
 	EEPROM_write(0x01, Orario.Minuti);
 	EEPROM_write(0x02, Orario.Ore);
 	EEPROM_write(0x03, Orario.Giorno);
 	EEPROM_write(0x04, Orario.Mesi);
 	EEPROM_write(0x05, Orario.Anno);
+	// User Custom Program
 }
 
 void defineTimer(uint8_t TimerNumber, uint8_t Mode, uint8_t prescaler) {
@@ -105,7 +108,7 @@ void defineTimer(uint8_t TimerNumber, uint8_t Mode, uint8_t prescaler) {
 }
 
 void EEPROM_write(uint8_t address, uint8_t data) {
-	cli();
+	cli(); // Disable interrupts
 	while(EECR & (1 << EEPE)) {}
 	EEARH = 0x00;
 	EEARL = address;
@@ -113,5 +116,5 @@ void EEPROM_write(uint8_t address, uint8_t data) {
 	EECR = 0x00;
 	EECR = (1 << EERIE) | (1 << EEMPE) | (1 << EEPE);
 	for(uint8_t i = 20; i != 0; i--) {} // Delay farlocco per evitare problemi con EEPROM
-	sei();
+	sei(); // Enable interrupts
 }
