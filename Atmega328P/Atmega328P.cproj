@@ -145,6 +145,12 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Utilities\drivers.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utilities\drivers.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Utilities\functions.c">
       <SubType>compile</SubType>
     </Compile>
