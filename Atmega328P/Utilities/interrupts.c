@@ -30,6 +30,7 @@ void main1() {
 ISR(TIMER2_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli seconds
 {
   __ms++;
+	checkTemperature(0);
   if(__ms >= 1000) { // One second passed
     __ms -= 1000;
     __lastTimerSeconds++;

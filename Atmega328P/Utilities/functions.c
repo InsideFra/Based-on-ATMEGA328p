@@ -9,7 +9,6 @@
 #include "../define.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <string.h>
 #include "interrupts.h"
 #include "drivers.h"
 
@@ -90,7 +89,7 @@ void updateRTC() { // Funzione ogni secondo
 			}
 		}
 }
-// Orologio - Orario 
+// Orologio - Orario
 
 void updateEEPROM() {
 	// User Custom Program
@@ -118,3 +117,5 @@ void EEPROM_write(uint8_t address, uint8_t data) {
 	for(uint8_t i = 20; i != 0; i--) {} // Delay farlocco per evitare problemi con EEPROM
 	sei(); // Enable interrupts
 }
+
+uint8_t checkTemperature(SensorID) { ReadTemp(SensorID); }

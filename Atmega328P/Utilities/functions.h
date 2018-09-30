@@ -66,4 +66,6 @@ void setFakePWM(void* Funzione);
 
 void EEPROM_write(uint8_t uiAddress, uint8_t data);
 
+uint8_t checkTemperature(uint8_t SensorID);
+
 #endif /* FUNCTIONS_H_ */
