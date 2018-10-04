@@ -10,6 +10,7 @@
 #define DEFINE_H_
 
 #define F_CPU 16000000
+#define ACK 0x7E
 
 #define PORTA *(volatile uint8_t*)
 
@@ -41,6 +42,12 @@
 #define OUTPUT 1
 #define LOW 0
 #define HIGH 1
+#define DEFAULT 0
+#define SLAVE 1
+#define MASTER 0
+#define MSBFIRST 0
+#define APERTA 1
+#define CHIUSA 0
 
 #define wRegister 0b11010010
 

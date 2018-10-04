@@ -17,6 +17,7 @@ extern volatile uint16_t __ms;
 extern volatile unsigned long __lastTimerSeconds; // Should at least 136 years
 
 volatile uint8_t Sending = 0;
+volatile _Bool 	 SPIMode = SLAVE;
 
 extern volatile times Orario;
 
@@ -56,11 +57,15 @@ _Bool getstatus_pin(int PORT, int PINNUmb) {
 
 void start_SPI(spiconfig SPIC) {
 	if(!SPIC.MasterSlave) { // SPI as master
-	set_pin(PORTSS,   2, OUTPUT, 0);
-	set_pin(PMosi, 3, OUTPUT, 0);
-	set_pin(PMiso, 4, INPUT,  0);
-	set_pin(PSckl, 5, OUTPUT, 0); }
-	SPCR |= (1 << SPIE) || (1 << SPE) || (1 << MSTR);
+		set_pin(PORTSS,   2, OUTPUT, 0);
+		set_pin(PMosi, 3, OUTPUT, 0);
+		set_pin(PMiso, 4, INPUT,  0);
+		set_pin(PSckl, 5, OUTPUT, 0); SPIMode = MASTER; }
+	else {
+		set_pin(PORTSS, 2, INPUT, 0);
+		set_pin(PMiso, 4,  OUTPUT,  0);
+	}
+	SPCR |= (1 << SPIE) || (1 << SPE);
 	if(SPIC.MasterSlave)     SPCR ^= (1 << MSTR);     // Setup as Slave , MSTR must be 0
 	if(SPIC.MSBLSBFirst)     SPCR ^= (1 << DORD);     // Setup as LSB First, DRDB must be 1
 	if(SPIC.clkRisingFalling) SPCR ^= (1 << CPOL); // Setup as Falling Edge, CPOL must be 1
@@ -90,7 +95,7 @@ void updateRTC() { // Funzione ogni secondo
 			}
 		}
 }
-// Orologio - Orario 
+// Orologio - Orario
 
 void updateEEPROM() {
 	// User Custom Program

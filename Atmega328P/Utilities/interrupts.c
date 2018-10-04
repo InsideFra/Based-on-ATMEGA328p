@@ -16,7 +16,11 @@ volatile _Bool   Reverse = 0;
 volatile _Bool   startLed = 0;
 volatile uint8_t tempTimerLed = 10;
 
+volatile uint8_t RichiestaOrario = 0;
+volatile uint8_t _bufferStatusSPI = 0;
+
 extern volatile times 	 Orario;
+extern volatile _Bool SPIMode;
 
 void main1() {
 	// Counter Millisecondi Timer 2
@@ -41,7 +45,7 @@ ISR(TIMER2_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli
       delayTimerPWM++;
       if(delayTimerPWM >= tempTimerLed) {
         delayTimerPWM = 0;
-        OCR0A = ( Reverse ? (OCR0A - 3) : (OCR0A + 3) );
+        OCR0A = ( Reverse ? (OCR0A + 3) : (OCR0A - 3) );
         Ocrlast = OCR0A;
         if(Ocrlast >= 240 && Reverse == 0) { // 225 viene scelto per evitare l'overflow, con valore massimo 255
           startLed = 0; Reverse = 1;
@@ -52,7 +56,7 @@ ISR(TIMER2_COMPA_vect) // ISR Timer0 match COMPA, that`s used for counting milli
         }
       }
   } else {
-    if(lastTimerLedOn >= MAXTIMELED) {
+    if(lastTimerLedOn >= MAXTIMELED && StatusPorta == 0) {
       lastTimerLedOn = 0; startLed = 1; Reverse = 1;
     }
   }
@@ -67,12 +71,10 @@ ISR(PCINT2_vect) { // INTERRUPT PCINT2
 
 	if(changedBits & (1 << 5)) { // Cambiato pin 5
 		if(PIND & ( 1 << 5)) { // Pin 5 is HIGH
-			if(LedOn == 0) {
-        startLed = 1;
-      } else if(LedOn == 0) {
-
-      }
+			StatusPorta = APERTA;
+			if(!LedOn == 0) startLed = 1; Reverse = 0;
 		} else { // Pin 5 is LOW
+			StatusPorta = CHIUSA;
 			//
 		}
 	}
@@ -85,20 +87,60 @@ volatile extern _Bool	 bufferSize;
 volatile extern uint8_t  Sending;
 // Variabili SPI Wireless
 
+volatile _Bool StatusPorta = 0;
+volatile uint8_t SensoreUmidita = 0;
+volatile uint8_t SensoreTemperatura = 0;
+volatile _Bool VentolaONOFF = LOW;
+
 ISR(SPI_STC_vect) // ISR SPI finito
 {
-	// Funzioni necessarie per lo SPI
-	switch(Sending) {
-		case 0:
-		case 1:
-		case 2:
-			if(!bufferSize) { // 32 bit
+	if(SPIMode == SLAVE) {
+		if(Sending == 0) {
+			// Read SPDR
+			switch(SPDR) {
+				case 10: // Richiesta Orario
+					switch(RichiestaOrario) {
+						case 0: RichiestaOrario++; SPDR = Orario.Secondi;
+						case 1: RichiestaOrario++; SPDR = Orario.Minuti;
+						case 2: RichiestaOrario++; SPDR = Orario.Ore;
+						case 3: RichiestaOrario++; SPDR = Orario.Giorno;
+						case 4: RichiestaOrario++; SPDR = Orario.Mesi;
+						case 5: RichiestaOrario++; SPDR = Orario.Anno;
+						case 6: RichiestaOrario = 0; SPDR = ACK;
+					;}
+				case 20: // Stato Porta
+					SPDR = StatusPorta ? 0x01 : 0x00;
+				case 30: // Valore Sensore Umidità
+					SPDR = SensoreUmidita;
+				case 40: // Valore Sensore Temperatura
+					SPDR = SensoreTemperatura;
+				case 50: // Stato Ventola
+					SPDR = VentolaONOFF ? 0x01 : 0x00;
+				case 60: // Modifica Stato Ventola in 1
+					VentolaONOFF = HIGH;
+				case 70: // Modifica Stato Led in FULLON
+					OCR0A = 255; startLed = 0; Reverse = 1; tempTimerLed = 25;
+				case 80: // Modifica Stato Led in FULLOFF
+					OCR0A = 0; 	 startLed = 0; Reverse = 0; tempTimerLed = 25;
+				case 90: // Doppio Transfer -> Avvio Procedura Led con tempTimerLed
+					if(!_bufferStatusSPI) { _bufferStatusSPI = 1;}
+					else if(_bufferStatusSPI) { _bufferStatusSPI = 0; OCR0A = 0; tempTimerLed = SPDR; startLed = 1; Reverse = 0;}
+			;}
+		} else if (Sending == 1) {
+			// Write SPDR
+		}
+	} else if(SPIMode == MASTER) {
+		switch(Sending) {
+			case 0:
+			case 1:
+			case 2:
+				if(!bufferSize) { // 32 bit
 
-			} else { // 8 bit
-				sendoverspi(bufferDataToWrite, 3);
-			}
-		case 3: bufferDataToWrite = 0; Sending = 0; toggle_pin(WCSN, 0); // Necessario per interrompere una trasmissione nel chip. // work in progress
-		;
+				} else { // 8 bit
+					sendoverspi(bufferDataToWrite, 3);
+				}
+			case 3: bufferDataToWrite = 0; Sending = 0; toggle_pin(WCSN, 0); // Necessario per interrompere una trasmissione nel chip. // work in progress
+		;}
+		Sending = 0;
 	}
-	Sending = 0;
 }

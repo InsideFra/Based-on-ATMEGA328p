@@ -23,8 +23,8 @@
 
 extern int	foo;
 volatile extern uint8_t	Sending;
-volatile extern uint8_t UsartBufferData;
-volatile extern uint8_t SendingUSART;
+volatile uint8_t UsartBufferData;
+volatile uint8_t SendingUSART;
 
 volatile extern uint8_t Ocrlast;
 volatile extern _Bool   LedOn;
@@ -85,8 +85,10 @@ int main(void)
 	// INTERRUPT PORTA
    lastPIND = PIND;
 
-	foo = 1;
+  foo = 1;
   tempTimerLed = 50; startLed = 1; // Accensione dei Led
+  spiconfig sconfig = {SLAVE, MSBFIRST, DEFAULT, DEFAULT}; 
+  start_SPI(sconfig);
 
   while (1)
   {

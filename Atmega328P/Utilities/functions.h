@@ -34,8 +34,7 @@ _Bool sendoverspi(uint8_t _data, uint8_t action);
 // End i2c
 
 // USART
-volatile uint8_t UsartBufferData = 0;
-volatile uint8_t SendingUSART = 0;
+
 typedef struct USARTConfig {
   uint8_t Baudrate;
   uint8_t FrameFormat;

@@ -73,5 +73,5 @@ void setRX() {
 }
 
 _Bool wSendPackage(uint8_t data) {
-
+	return 0;
 }
