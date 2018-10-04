@@ -19,8 +19,20 @@ volatile uint8_t tempTimerLed = 10;
 volatile uint8_t RichiestaOrario = 0;
 volatile uint8_t _bufferStatusSPI = 0;
 
-extern volatile times 	 Orario;
-extern volatile _Bool SPIMode;
+volatile extern times 	 Orario;
+volatile extern _Bool SPIMode;
+
+// Variabili SPI Wireless
+volatile extern uint32_t bufferDataToWrite32;
+volatile extern uint8_t  bufferDataToWrite;
+volatile extern _Bool	 bufferSize;
+volatile extern uint8_t  Sending;
+// Variabili SPI Wireless
+volatile uint8_t SensoreUmidita = 0;
+volatile uint8_t SensoreTemperatura = 0;
+volatile _Bool VentolaONOFF = LOW;
+volatile _Bool StatusPorta = 0; // Definisce se la porta è aperta o chiusa attraverso la lettura del sensore
+
 
 void main1() {
 	// Counter Millisecondi Timer 2
@@ -79,18 +91,6 @@ ISR(PCINT2_vect) { // INTERRUPT PCINT2
 		}
 	}
 }
-
-// Variabili SPI Wireless
-volatile extern uint32_t bufferDataToWrite32;
-volatile extern uint8_t  bufferDataToWrite;
-volatile extern _Bool	 bufferSize;
-volatile extern uint8_t  Sending;
-// Variabili SPI Wireless
-
-volatile _Bool StatusPorta = 0;
-volatile uint8_t SensoreUmidita = 0;
-volatile uint8_t SensoreTemperatura = 0;
-volatile _Bool VentolaONOFF = LOW;
 
 ISR(SPI_STC_vect) // ISR SPI finito
 {

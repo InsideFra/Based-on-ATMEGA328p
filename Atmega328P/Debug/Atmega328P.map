@@ -266,7 +266,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x766
+.text           0x00000000      0x76a
  *(.vectors)
  .vectors       0x00000000       0x68 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.150/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -366,30 +366,30 @@ END GROUP
                 0x00000308       0x16 Utilities/functions.o
                 0x00000308                sendoverspi
  .text.updateRTC
-                0x0000031e       0x8a Utilities/functions.o
+                0x0000031e       0x7a Utilities/functions.o
                 0x0000031e                updateRTC
  .text.EEPROM_write
-                0x000003a8       0x1c Utilities/functions.o
-                0x000003a8                EEPROM_write
+                0x00000398       0x1c Utilities/functions.o
+                0x00000398                EEPROM_write
  .text.updateEEPROM
-                0x000003c4       0x3e Utilities/functions.o
-                0x000003c4                updateEEPROM
+                0x000003b4       0x3e Utilities/functions.o
+                0x000003b4                updateEEPROM
  .text.__vector_7
-                0x00000402      0x162 Utilities/interrupts.o
-                0x00000402                __vector_7
+                0x000003f2      0x16c Utilities/interrupts.o
+                0x000003f2                __vector_7
  .text.__vector_5
-                0x00000564       0x4a Utilities/interrupts.o
-                0x00000564                __vector_5
+                0x0000055e       0x54 Utilities/interrupts.o
+                0x0000055e                __vector_5
  .text.__vector_17
-                0x000005ae      0x1a8 Utilities/interrupts.o
-                0x000005ae                __vector_17
- .text.libgcc   0x00000756        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
-                0x00000756                __tablejump2__
-                0x00000762                . = ALIGN (0x2)
+                0x000005b2      0x1a8 Utilities/interrupts.o
+                0x000005b2                __vector_17
+ .text.libgcc   0x0000075a        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+                0x0000075a                __tablejump2__
+                0x00000766                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000762        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x00000762                _exit
-                0x00000762                exit
+ .fini9         0x00000766        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x00000766                _exit
+                0x00000766                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -408,11 +408,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000762        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x00000766        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000766                _etext = .
+                0x0000076a                _etext = .
 
-.data           0x00800100        0x2 load address 0x00000766
+.data           0x00800100        0x2 load address 0x0000076a
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -437,20 +437,20 @@ END GROUP
                 0x00800102                Orario
  .bss.Sending   0x00800108        0x1 Utilities/functions.o
                 0x00800108                Sending
- .bss.VentolaONOFF
-                0x00800109        0x1 Utilities/interrupts.o
-                0x00800109                VentolaONOFF
- .bss.SensoreTemperatura
-                0x0080010a        0x1 Utilities/interrupts.o
-                0x0080010a                SensoreTemperatura
- .bss.SensoreUmidita
-                0x0080010b        0x1 Utilities/interrupts.o
-                0x0080010b                SensoreUmidita
+ .bss.lastPIND  0x00800109        0x1 Utilities/interrupts.o
+                0x00800109                lastPIND
  .bss.StatusPorta
+                0x0080010a        0x1 Utilities/interrupts.o
+                0x0080010a                StatusPorta
+ .bss.VentolaONOFF
+                0x0080010b        0x1 Utilities/interrupts.o
+                0x0080010b                VentolaONOFF
+ .bss.SensoreTemperatura
                 0x0080010c        0x1 Utilities/interrupts.o
-                0x0080010c                StatusPorta
- .bss.lastPIND  0x0080010d        0x1 Utilities/interrupts.o
-                0x0080010d                lastPIND
+                0x0080010c                SensoreTemperatura
+ .bss.SensoreUmidita
+                0x0080010d        0x1 Utilities/interrupts.o
+                0x0080010d                SensoreUmidita
  .bss._bufferStatusSPI
                 0x0080010e        0x1 Utilities/interrupts.o
                 0x0080010e                _bufferStatusSPI
@@ -486,8 +486,8 @@ END GROUP
                 0x0080012c                Timer
                 0x00800140                Timer8
                 0x0080014a                PROVIDE (__bss_end, .)
-                0x00000766                __data_load_start = LOADADDR (.data)
-                0x00000768                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0000076a                __data_load_start = LOADADDR (.data)
+                0x0000076c                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x0080014a        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -591,13 +591,13 @@ END GROUP
  .debug_abbrev  0x000008b7      0x139 Utilities/interrupts.o
  .debug_abbrev  0x000009f0      0x1a7 Wireless/wThings.o
 
-.debug_line     0x00000000      0xa45
+.debug_line     0x00000000      0xa67
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x133 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.150/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_line    0x00000133      0x185 main.o
  .debug_line    0x000002b8      0x2eb Utilities/functions.o
- .debug_line    0x000005a3      0x2f8 Utilities/interrupts.o
- .debug_line    0x0000089b      0x1aa Wireless/wThings.o
+ .debug_line    0x000005a3      0x31a Utilities/interrupts.o
+ .debug_line    0x000008bd      0x1aa Wireless/wThings.o
 
 .debug_frame    0x00000000      0x274
  *(.debug_frame)
@@ -618,11 +618,11 @@ END GROUP
  .debug_str     0x00000616       0xcb Wireless/wThings.o
                                 0x2e7 (size before relaxing)
 
-.debug_loc      0x00000000      0x73d
+.debug_loc      0x00000000      0x748
  *(.debug_loc)
  .debug_loc     0x00000000      0x459 Utilities/functions.o
- .debug_loc     0x00000459      0x21b Utilities/interrupts.o
- .debug_loc     0x00000674       0xc9 Wireless/wThings.o
+ .debug_loc     0x00000459      0x226 Utilities/interrupts.o
+ .debug_loc     0x0000067f       0xc9 Wireless/wThings.o
 
 .debug_macinfo
  *(.debug_macinfo)
