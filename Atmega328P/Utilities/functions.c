@@ -44,7 +44,7 @@ void toggle_pin(int PORT, int PINNumb) {
 	}
 }
 
-_Bool getstatus_pin(int PORT, int PINNUmb) {
+_Bool getstatus_pin(uint8_t PORT, int PINNUmb) {
 	uint8_t DDR = (PORT) - 0x01;
 	if (PORTA(DDR) ^ (1 << PINNUmb)) { // Configured as an Output Pin
 		if(PORTA(PORT) ^ (1 << PINNUmb)) { return 1; } else return 0;
@@ -85,12 +85,12 @@ void updateRTC() { // Funzione ogni secondo
 		Orario.Secondi++;
 		if(Orario.Secondi >= 60) {
 			Orario.Minuti += Orario.Secondi/60;
-			Orario.Secondi = Orario.Secondi%60;
+			Orario.Secondi %= 60;
 			if(Orario.Minuti >= 60) {
 				Orario.Ore =   Orario.Minuti/60;
-				Orario.Minuti = Orario.Minuti%60;
+				Orario.Minuti %= 60;
 				if(Orario.Ore >= 24) {
-					Orario.Ore = 0;
+					Orario.Ore = 0; // Work in progress
 				}
 			}
 		}

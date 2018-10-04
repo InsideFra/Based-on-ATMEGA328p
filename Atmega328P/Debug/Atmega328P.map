@@ -63,7 +63,7 @@ Discarded input sections
  .text.wWrite_Register32
                 0x00000000        0x2 Wireless/wThings.o
  .text.startWireless
-                0x00000000       0x30 Wireless/wThings.o
+                0x00000000       0x2e Wireless/wThings.o
  .text.wRead_Register8
                 0x00000000        0x4 Wireless/wThings.o
  .text.wRead_Register32
@@ -575,13 +575,13 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1673
+.debug_info     0x00000000     0x166e
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.150/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_info    0x000005f4      0x2a5 main.o
  .debug_info    0x00000899      0x64a Utilities/functions.o
  .debug_info    0x00000ee3      0x3b9 Utilities/interrupts.o
- .debug_info    0x0000129c      0x3d7 Wireless/wThings.o
+ .debug_info    0x0000129c      0x3d2 Wireless/wThings.o
 
 .debug_abbrev   0x00000000      0xb97
  *(.debug_abbrev)
@@ -618,11 +618,11 @@ END GROUP
  .debug_str     0x00000616       0xcb Wireless/wThings.o
                                 0x2e7 (size before relaxing)
 
-.debug_loc      0x00000000      0x748
+.debug_loc      0x00000000      0x733
  *(.debug_loc)
- .debug_loc     0x00000000      0x459 Utilities/functions.o
- .debug_loc     0x00000459      0x226 Utilities/interrupts.o
- .debug_loc     0x0000067f       0xc9 Wireless/wThings.o
+ .debug_loc     0x00000000      0x444 Utilities/functions.o
+ .debug_loc     0x00000444      0x226 Utilities/interrupts.o
+ .debug_loc     0x0000066a       0xc9 Wireless/wThings.o
 
 .debug_macinfo
  *(.debug_macinfo)

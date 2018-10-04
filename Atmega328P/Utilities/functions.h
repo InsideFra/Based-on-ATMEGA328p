@@ -16,7 +16,7 @@ void* pointFunzTimer[6];
 
 void  set_pin(int PORT, int PINNumb, _Bool INPOUT, _Bool LowHIGH);
 void  toggle_pin(int PORT, int PINNumb);
-_Bool getstatus_pin(int PORT, int PINNUmb);
+_Bool getstatus_pin(uint8_t PORT, int PINNUmb);
 
 // SPI
 typedef struct SPIConfigs {
