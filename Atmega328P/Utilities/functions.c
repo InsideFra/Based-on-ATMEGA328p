@@ -84,11 +84,11 @@ _Bool sendoverspi(uint8_t _data, uint8_t action) {
 void updateRTC() { // Funzione ogni secondo
 		Orario.Secondi++;
 		if(Orario.Secondi >= 60) {
-			Orario.Minuti += ( Orario.Secondi/60 + (Orario.Secondi-(Orario.Secondi/60) * 60) );
-			Orario.Secondi = 0;
+			Orario.Minuti += Orario.Secondi/60;
+			Orario.Secondi = Orario.Secondi%60;
 			if(Orario.Minuti >= 60) {
-				Orario.Ore = Orario.Minuti/60 + (Orario.Minuti - (Orario.Minuti/60)*60 );
-				Orario.Minuti = 0;
+				Orario.Ore =   Orario.Minuti/60;
+				Orario.Minuti = Orario.Minuti%60;
 				if(Orario.Ore >= 24) {
 					Orario.Ore = 0;
 				}
